@@ -26,18 +26,17 @@ class UserController extends Controller
         ]);
     }
 
-    function userList(Request $request){
-        $users = User::query()
-        ->select('name', 'email', 'role')
-        ->paginate($request->input('length', 10)); // Default is 10 records per page
-
-    return response()->json([
-        'draw' => intval($request->input('draw')),
-        'recordsTotal' => $users->total(),
-        'recordsFiltered' => $users->total(),
-        'data' => $users->items(),
-    ]);
-
+    function userList(Request $request)
+    {
+        $users = User::with('role')->paginate($request->input('length', 10)); // Default is 10 records per page
+    
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $users->total(),
+            'recordsFiltered' => $users->total(),
+            'data' => $users->items(),
+        ]);
     }
+    
 }
 
