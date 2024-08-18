@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Catering;
+use Illuminate\Support\Facades\Auth;
+
 class CateringController extends Controller
 {
     function index(){
@@ -13,6 +15,7 @@ class CateringController extends Controller
 
     function createCatering(Request $request){
         $catering=Catering::create([
+            'user_id' => $request->user_id,
             "name" => $request->name,
             "address" => $request->address,
 
@@ -21,7 +24,7 @@ class CateringController extends Controller
     
     function cateringList(Request $request)
     {
-        $catering = Catering::paginate($request->input('length', 10)); // Default is 10 records per page
+        $catering = Catering::with('user')->paginate($request->input('length', 10)); // Default is 10 records per page
     
         return response()->json([
             'draw' => intval($request->input('draw')),

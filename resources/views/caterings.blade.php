@@ -3,7 +3,9 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <h1>{{ $title }}</h1>
+  @if(Auth::check() && Auth::user()->role->slug === 'catering')
   <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalId">Add New</button>
+  @endif
 </div>
 
 <section class="section">
@@ -20,6 +22,7 @@
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>User Name</th>
                   <th>Address</th>
                   <th>Actions</th>
                 </tr>
@@ -42,6 +45,7 @@
       </div>
       <div class="modal-body">
         <form id="createCateringForm" action="">
+          <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" name="name" id="name" placeholder="Name" required />
@@ -76,7 +80,14 @@
     },
     "columns": [
         { "data": "name" }, // Name column
+        {
+            "data": null,
+            "render": function(data, type, row) {
+                return `${row?.user?.name}`;
+            }
+        },
         { "data": "address" }, // Name column
+
         {
             "data": null,
             "render": function(data, type, row) {
