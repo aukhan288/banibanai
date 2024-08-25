@@ -21,5 +21,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
-Route::get('/caterings', [App\Http\Controllers\CateringController::class, 'index'])->name('caterings');
-Route::get('/venus', [App\Http\Controllers\VenuController::class, 'index'])->name('venus');
+Route::get('/stores', [App\Http\Controllers\StoreController::class, 'index'])->name('stores');
+Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders');
+Route::get('/fees', [App\Http\Controllers\FeeController::class, 'index'])->name('fees');

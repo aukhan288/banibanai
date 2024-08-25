@@ -101,8 +101,13 @@
             "data": null,
             "render": function(data, type, row) {
                 return `
-                    <button class="btn btn-sm btn-warning">Edit</button> 
-                    <button class="btn btn-sm btn-danger">Delete</button>`;
+                       <td>
+                          <div class="btn-group" role="group" aria-label="Basic example">
+                          <button type="button" class="btn btn-xs btn-success"><i class="mdi mdi-eye text-white"></i></button>
+                          <button type="button" class="btn btn-xs btn-warning"><i class="mdi mdi-lead-pencil text-white"></i></button>
+                          <button type="button" class="btn btn-xs btn-danger"><i class="mdi mdi-delete text-white"></i></button>
+                        </div>
+                          </td>`;
             }
         }
     ],

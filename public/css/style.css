@@ -8613,7 +8613,7 @@
   --bs-gray-700: #495057;
   --bs-gray-800: #343a40;
   --bs-gray-900: #212529;
-  --bs-primary: #4d83ff;
+  --bs-primary: #000281;
   --bs-secondary: #686868;
   --bs-success: #71c016;
   --bs-info: #7859df;
@@ -11430,13 +11430,13 @@ fieldset:disabled .btn {
 }
 
 .btn-primary {
-  color: #000;
-  background-color: #4d83ff;
-  border-color: #4d83ff;
+  color: #FFF;
+  background-color: #000281;
+  border-color: #000281;
 }
 
 .btn-primary:hover {
-  color: #000;
+  color: #FFF;
   background-color: #6896ff;
   border-color: #5f8fff;
 }
@@ -11509,14 +11509,14 @@ fieldset:disabled .btn {
 
 .btn-success {
   color: #000;
-  background-color: #71c016;
-  border-color: #71c016;
+  background-color: #19a742;
+  border-color: #19a742;
 }
 
 .btn-success:hover {
   color: #000;
-  background-color: #86c939;
-  border-color: #7fc62d;
+  background-color: #19a741c5;
+  border-color: #19a741c5;
 }
 
 .btn-check:focus + .btn-success, .btn-success:focus {
@@ -11587,14 +11587,14 @@ fieldset:disabled .btn {
 
 .btn-warning {
   color: #000;
-  background-color: #ffc100;
-  border-color: #ffc100;
+  background-color: rgba(255, 201, 38, 0.763);
+  border-color: rgba(255, 201, 38, 0.763);
 }
 
 .btn-warning:hover {
   color: #000;
-  background-color: #ffca26;
-  border-color: #ffc71a;
+  background-color: rgba(255, 201, 38, 0.635);
+  border-color: rgba(255, 201, 38, 0.635);
 }
 
 .btn-check:focus + .btn-warning, .btn-warning:focus {
@@ -11625,15 +11625,15 @@ fieldset:disabled .btn {
 }
 
 .btn-danger {
-  color: #000;
-  background-color: #ff4747;
-  border-color: #ff4747;
+  color: #FFF;
+  background-color: #ff0101;
+  border-color: #ff0101;
 }
 
 .btn-danger:hover {
-  color: #000;
-  background-color: #ff6363;
-  border-color: #ff5959;
+  color: #FFF;
+  background-color: #ff1f1f;
+  border-color: #ff1f1f;
 }
 
 .btn-check:focus + .btn-danger, .btn-danger:focus {
@@ -11806,14 +11806,14 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-success {
-  color: #71c016;
-  border-color: #71c016;
+  color: #00b10b;
+  border-color: #00b10b;
 }
 
 .btn-outline-success:hover {
   color: #000;
-  background-color: #71c016;
-  border-color: #71c016;
+  background-color: rgb(25, 193, 34);
+  border-color: rgb(25, 193, 34);
 }
 
 .btn-check:focus + .btn-outline-success, .btn-outline-success:focus {
@@ -12020,7 +12020,7 @@ fieldset:disabled .btn {
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.5rem 0.81rem;
   font-size: 0.875rem;
-  border-radius: 0.1875rem;
+  border-radius: 5;
 }
 
 .fade {

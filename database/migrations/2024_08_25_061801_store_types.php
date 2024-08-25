@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('caterings', function (Blueprint $table) {
+        Schema::create('store_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name');
-            $table->string('address');
+            $table->string('slug');
+            $table->string('description');
             $table->timestamps();
             });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('caterings');
+        Schema::dropIfExists('store_types');
     }
 };

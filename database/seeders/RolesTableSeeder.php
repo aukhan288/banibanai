@@ -22,26 +22,34 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Catering',
-                'slug' => 'catering',
+                'name' => 'Collector',
+                'slug' => 'collector',
                 'description' => 'Can ,Modify System Level Changes',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Venu',
-                'slug' => 'venu',
+                'name' => 'Customer',
+                'slug' => 'customer',
                 'description' => 'Can ,Modify System Level Changes',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Chairity',
-                'slug' => 'chairity',
+                'name' => 'Vender',
+                'slug' => 'Vender',
                 'description' => 'Can ,Modify System Level Changes',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Call Agent',
+                'slug' => 'agent',
+                'description' => 'Can ,Modify System Level Changes',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+           
             // Add more user records here
         ];
 
@@ -49,3 +57,4 @@ class RolesTableSeeder extends Seeder
         DB::table('roles')->insert($roles);
     }
 }
+
