@@ -84,46 +84,46 @@
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="{{ url('/home') }}">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+              <i class="mdi mdi-view-dashboard"></i>
+              <span class="menu-title"> Dashboard</span>
             </a>
           </li>
           @if(Auth::check() && Auth::user()->role->slug === 'admin')
   <li class="nav-item">
     <a class="nav-link" href="{{ url('/users') }}">
-      <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Users</span>
+      <i class="mdi mdi-account-multiple-plus"></i>
+      <span class="menu-title"> Users</span>
     </a>
   </li>
 @endif
   <li class="nav-item">
     <a class="nav-link" href="{{ url('/stores') }}">
-      <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Stores</span>
+      <i class="mdi mdi-store"></i>
+      <span class="menu-title"> Stores</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{{ url('/orders') }}">
       <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Orders</span>
+      <span class="menu-title"> Orders</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{{ url('/stores') }}">
       <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Menu</span>
+      <span class="menu-title"> Menu</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{{ url('/stores') }}">
-      <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Notifications</span>
+      <i class="mdi mdi-bell-ring"></i>
+      <span class="menu-title"> Notifications</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{{ url('/fees') }}">
-      <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Fee</span>
+      <i class="mdi mdi-cash-multiple"></i>
+      <span class="menu-title">  Fee</span>
     </a>
   </li>
 
