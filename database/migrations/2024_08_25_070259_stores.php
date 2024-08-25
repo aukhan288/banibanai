@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('venus', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('name');
-            $table->string('address');
-            $table->timestamps();
-            });
+        Schema::create('stores', function (Blueprint $table) {  
+        $table->id();
+        $table->string('name');
+        $table->string('slug');
+        $table->string('description');
+        $table->timestamps();
+      });  
     }
 
     /**
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('venus');
+        Schema::dropIfExists('stores');
     }
 };

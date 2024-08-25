@@ -96,29 +96,48 @@
     </a>
   </li>
 @endif
-@if(Auth::check() && (Auth::user()->role->slug === 'catering' || Auth::user()->role->slug === 'admin'))
   <li class="nav-item">
-    <a class="nav-link" href="{{ url('/caterings') }}">
+    <a class="nav-link" href="{{ url('/stores') }}">
       <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Caterings</span>
+      <span class="menu-title">Stores</span>
     </a>
   </li>
-@endif
-@if(Auth::check() && (Auth::user()->role->slug === 'venu' || Auth::user()->role->slug === 'admin'))
   <li class="nav-item">
-    <a class="nav-link" href="{{ url('/venus') }}">
+    <a class="nav-link" href="{{ url('/orders') }}">
       <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title">Venus</span>
+      <span class="menu-title">Orders</span>
     </a>
   </li>
-@endif
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/stores') }}">
+      <i class="mdi mdi-home menu-icon"></i>
+      <span class="menu-title">Menu</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/stores') }}">
+      <i class="mdi mdi-home menu-icon"></i>
+      <span class="menu-title">Notifications</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/fees') }}">
+      <i class="mdi mdi-home menu-icon"></i>
+      <span class="menu-title">Fee</span>
+    </a>
+  </li>
+
+
 
         
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel py-4">
-       @yield('content')
+      <div class="main-panel">
+        <div class="content-wrapper">
+
+          @yield('content')
+        </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
