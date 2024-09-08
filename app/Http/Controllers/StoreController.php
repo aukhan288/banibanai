@@ -129,5 +129,10 @@ class StoreController extends Controller
             'data' => $store
         ]);
     }
-
+    
+    public function destroy(Store $store)
+    {
+        $store->delete();
+        return response()->json(['success' => true, 'message' => 'User deleted successfully']);
+    }
 }

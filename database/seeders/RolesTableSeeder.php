@@ -22,8 +22,8 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'User',
-                'slug' => 'user',
+                'name' => 'Vendor',
+                'slug' => 'vendor',
                 'description' => 'Can ,Modify System Level Changes',
                 'created_at' => now(),
                 'updated_at' => now(),

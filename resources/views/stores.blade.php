@@ -3,7 +3,9 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <h1>{{ $title }}</h1>
+  @if(Auth::user()?->role?->slug=='vendor')
   <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalId">Add New Store</button>
+  @endif
 </div>
 
 <section class="section">
@@ -36,70 +38,103 @@
             <input type="text" class="form-control" name="name" placeholder="Store Name" required />
           </div>
             <input type="hidden" value="{{ Auth::user()->id }}" name="user_id" />
-          <div class="mb-3">
-            <label for="store_type_id" class="form-label">Store Type ID</label>
-            <input type="number" class="form-control" name="store_type_id" placeholder="Store Type ID" required />
-          </div>
-          <div class="mb-3">
+          <div class="row mb-3">
+            <div class="col-sm-6">
+            <label for="" class="form-label">Store Type</label>
+            <select
+              class="form-select form-select-md"
+              name="store_type_id"
+              id="store_type_id"
+            >
+            @foreach($storeType as $st)
+              <option value="{{$st?->id}}">{{$st?->name}}</option>
+            @endforeach  
+            </select>
+            
+            </div>
+            <div class="col-sm-6">
+            <label for="ntn" class="form-label">NTN</label>
+            <input type="number" class="form-control" name="ntn" placeholder="NTN" required />
+           </div>
+            </div>
+            <div class="row mb-3">
+            <div class="col-sm-8">
             <label for="thumbnail" class="form-label">Thumbnail</label>
             <input type="file" class="form-control" name="thumbnail" placeholder="Thumbnail URL" required />
-          </div>
-          <div class="mb-3">
-            <label for="min_delevery_time" class="form-label">Minimum Delivery Time</label>
-            <input type="text" class="form-control" name="min_delevery_time" placeholder="Minimum Delivery Time" required />
-          </div>
-          <div class="mb-3">
-            <label for="min_order" class="form-label">Minimum Order</label>
-            <input type="number" step="0.01" class="form-control" name="min_order" placeholder="Minimum Order" required />
-          </div>
-          <div class="mb-3">
-            <label for="rating" class="form-label">Rating</label>
-            <input type="number" step="0.01" class="form-control" name="rating" placeholder="Rating" required />
-          </div>
-          <div class="mb-3">
+       
+            </div>
+            <div class="col-sm-4">
             <label for="opning_time" class="form-label">Opening Time</label>
             <input type="time" class="form-control" name="opning_time" required />
           </div>
+          </div>
+          <hr>
+          <h4><b>Location</b></h4>
+          <hr>
           <div class="mb-3">
             <label for="address" class="form-label">Address</label>
             <input type="text" class="form-control" name="address" placeholder="Address" required />
           </div>
-          <div class="mb-3">
-            <label for="lat" class="form-label">Latitude</label>
-            <input type="number" step="0.000001" class="form-control" name="lat" placeholder="Latitude" required />
-          </div>
-          <div class="mb-3">
-            <label for="long" class="form-label">Longitude</label>
+         <div class="row mb-3">
+          <div class="col-sm-6">
+
+          <label for="long" class="form-label">Longitude</label>
             <input type="number" step="0.000001" class="form-control" name="long" placeholder="Longitude" required />
           </div>
-          <div class="mb-3">
-            <label for="ntn" class="form-label">NTN</label>
-            <input type="number" class="form-control" name="ntn" placeholder="NTN" required />
-          </div>
-          <div class="mb-3">
-            <label for="delivery_type" class="form-label">Delivery Type</label>
+          <div class="col-sm-6">
+          <label for="lat" class="form-label">Latitude</label>
+            <input type="number" step="0.000001" class="form-control" name="lat" placeholder="Latitude" required />
+         </div>
+         </div>
+         <hr>
+         <h4><b>Delivery Detail</b></h4>
+         <hr>
+         <div class="row mb-3">
+            <div class="col-sm-6">
+            <label for="min_delevery_time" class="form-label">Minimum  Time</label>
+            <input type="text" class="form-control" name="min_delevery_time" placeholder="Minimum Delivery Time" required />
+            </div>
+            <div class="col-sm-6">
+            <label for="min_order" class="form-label">Minimum Order</label>
+            <input type="number" step="0.01" class="form-control" name="min_order" placeholder="Minimum Order" required />
+            </div>
+         </div>
+         <div class="row mb-3">
+            <div class="col-sm-6">
+            <label for="delivery_type" class="form-label">Type</label>
             <input type="text" class="form-control" name="delivery_type" placeholder="Delivery Type" required />
-          </div>
-          <div class="mb-3">
-            <label for="delivery_fee" class="form-label">Delivery Fee</label>
+            </div>
+            <div class="col-sm-6">
+            <label for="delivery_radius" class="form-label">Radius</label>
+            <input type="number" step="0.01" class="form-control" name="delivery_radius" placeholder="Delivery Radius" required />
+            </div>
+         </div>
+          <hr>
+          <h4><b>Fee Detail</b></h4>
+          <hr>
+       <div class="row mb-3">
+        <div class="col-sm-6">
+        <label for="commission" class="form-label">Commission</label>
+            <input type="number" class="form-control" name="commission" placeholder="Commission" required />
+        </div>
+        <div class="col-sm-6">
+        <label for="platform_fee" class="form-label">Platform</label>
+            <input type="number" class="form-control" name="platform_fee" placeholder="Platform Fee" required />
+        </div>
+    
+       </div>
+       <div class="row mb-3">
+       <div class="col-sm-6">
+            <label for="delivery_fee" class="form-label">Delivery</label>
             <input type="number" class="form-control" name="delivery_fee" placeholder="Delivery Fee" required />
           </div>
-          <div class="mb-3">
-            <label for="delivery_radius" class="form-label">Delivery Radius</label>
-            <input type="number" step="0.01" class="form-control" name="delivery_radius" placeholder="Delivery Radius" required />
-          </div>
-          <div class="mb-3">
-            <label for="commission" class="form-label">Commission</label>
-            <input type="number" class="form-control" name="commission" placeholder="Commission" required />
-          </div>
-          <div class="mb-3">
-            <label for="platform_fee" class="form-label">Platform Fee</label>
-            <input type="number" class="form-control" name="platform_fee" placeholder="Platform Fee" required />
-          </div>
-          <div class="mb-3">
-            <label for="venu_fee" class="form-label">Venue Fee (Optional)</label>
+       <div class="col-sm-6">
+        <label for="venu_fee" class="form-label">Venue <span><small>(Optional)</small> </span></label>
             <input type="number" class="form-control" name="venu_fee" placeholder="Venue Fee" />
-          </div>
+        
+        </div>
+       </div>
+     
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save</button>
@@ -124,14 +159,14 @@
          }
      },
      "columns": [
-      { "data": "", 'title': 'Thumbnail', 
+      { "data": "", 'title': 'Logo', 
           "render": function(data, type, row) {
             return `<img style="height:40px; width:40px; border-radius:100px" src="${row?.thumbnail}" alt="Italian Trulli">`;
           }
           },
-         { "data": "name", 'title': 'Store Name' },
-         { "data": "user_id", 'title': 'User ID' },
-         { "data": "store_type_id", 'title': 'Store Type ID' },
+         { "data": "name", 'title': 'Name' },
+         { "data": "user_id", 'title': 'User' },
+         { "data": "store_type_id", 'title': 'Store Type' },
          { "data": "min_delevery_time", 'title': 'Minimum Delivery Time' },
          { "data": "min_order", 'title': 'Minimum Order' },
          { "data": "rating", 'title': 'Rating' },

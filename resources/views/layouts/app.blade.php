@@ -136,12 +136,14 @@
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @if(Auth::user()?->role?->slug=='admin')
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/users') }}">
           <i class="bi bi-grid"></i>
           <span>Users</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @endif
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/stores') }}">
           <i class="bi bi-grid"></i>
