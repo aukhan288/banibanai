@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(StoreTypesSeeder::class);
+        $this->call(StoreStatusesSeeder::class);
+        $users = \App\Models\User::factory()->count(100000)->create();
     }
 }

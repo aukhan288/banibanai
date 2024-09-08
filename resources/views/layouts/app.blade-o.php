@@ -1,22 +1,19 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Majestic Admin</title>
+  <link rel="stylesheet" href="{{ asset('css/materialdesignicons.min.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css" integrity="sha512-/k658G6UsCvbkGRB3vPXpsPHgWeduJwiWGPCGS14IQw3xpr63AEMdA8nMYG2gmYkXitQxDTn6iiK/2fD4T87qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    
-
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/datatable.css') }}">
   <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+  <link href="{{ asset('boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
   <script src="{{ asset('js/jQuery3.7.1.min.js') }}"></script>
@@ -28,64 +25,134 @@
   <script src="{{ asset('js/off-canvas.js') }}"></script>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+  <div class="container-scroller">
+   
+  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  <div class="navbar-brand-wrapper d-flex justify-content-center">
+    <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+      <a class="navbar-brand brand-logo" href="index.html">
+        <span >
+          bani banai
+        </span>
+      </a>
+    
+      <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../public/assets/images/logo-mini.svg"
+          alt="logo" /></a>
+      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+        <span class="mdi mdi-sort-variant"></span>
+      </button>
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+      data-toggle="offcanvas">
+      <span class="mdi mdi-menu"></span>
+    </button>
+    </div>
+  </div>
+  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+    <ul class="navbar-nav navbar-nav-right">
+      <li class="nav-item nav-profile dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
+          <!-- <img src="../../../assets/images/faces/face5.jpg" alt="profile" /> -->
+          <span class="nav-profile-name">{{ Auth::User()?->name }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+        <a class="dropdown-item">
+        <i class="mdi mdi-user text-primary"></i>
+          
+            {{ Auth::User()?->role?->name }}
+</a>  
+        <a class="dropdown-item">
+            <i class="mdi mdi-cog text-primary"></i>
+            Settings
+          </a>
+    
+          <a class="dropdown-item" href="{{ route('logout') }}"
+          onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+            <i class="mdi mdi-logout text-primary"></i>
+           <span>Logout</span> 
+           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
+          </a>
+        </div>
+      </li>
+    
+  </div>
+</nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url('/home') }}">
+              <i class="mdi mdi-view-dashboard"></i>
+              <span class="menu-title"> Dashboard</span>
+            </a>
+          </li>
+          @if(Auth::check() && Auth::user()->role->slug === 'admin')
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/users') }}">
+      <i class="mdi mdi-account-multiple-plus"></i>
+      <span class="menu-title"> Users</span>
+    </a>
+  </li>
+@endif
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/stores') }}">
+      <i class="mdi mdi-store"></i>
+      <span class="menu-title"> Stores</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/orders') }}">
+      <i class="mdi mdi-home menu-icon"></i>
+      <span class="menu-title"> Orders</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/stores') }}">
+      <i class="mdi mdi-home menu-icon"></i>
+      <span class="menu-title"> Menu</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/stores') }}">
+      <i class="mdi mdi-bell-ring"></i>
+      <span class="menu-title"> Notifications</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url('/fees') }}">
+      <i class="mdi mdi-cash-multiple"></i>
+      <span class="menu-title">  Fee</span>
+    </a>
+  </li>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+
+
+        
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+
+          @yield('content')
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <a href="https://www.bootstrapdash.com/" target="_blank">bootstrapdash.com </a>2021</span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Only the best <a href="https://www.bootstrapdash.com/" target="_blank"> Bootstrap dashboard  </a> templates</span>
+        </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
     </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
 </body>
 </html>

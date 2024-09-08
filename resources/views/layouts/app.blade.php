@@ -1,157 +1,209 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Majestic Admin</title>
-  <link rel="stylesheet" href="{{ asset('css/materialdesignicons.min.css') }}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css" integrity="sha512-/k658G6UsCvbkGRB3vPXpsPHgWeduJwiWGPCGS14IQw3xpr63AEMdA8nMYG2gmYkXitQxDTn6iiK/2fD4T87qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/datatable.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <title>Bani Banai</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-  <script src="{{ asset('js/jQuery3.7.1.min.js') }}"></script>
-  <script src="{{ asset('js/popper.js') }}"></script>
-  <script src="{{ asset('js/datatable.js') }}"></script>
-  <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
-  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('js/template.js') }}"></script>
-  <script src="{{ asset('js/off-canvas.js') }}"></script>
+  <!-- Favicons -->
+  <link href="{{ asset('images/logo.png') }}" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+ 
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <!-- Template Main CSS File -->
+  <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/sweetalert2.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <!-- Vendor JS Files -->
+    <script src="{{ asset('js/jQuery3.7.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 </head>
+
 <body>
-  <div class="container-scroller">
-   
-  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  <div class="navbar-brand-wrapper d-flex justify-content-center">
-    <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-      <a class="navbar-brand brand-logo" href="index.html">
-        <span >
-          bani banai
-        </span>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+    <i class="bi bi-list toggle-sidebar-btn m-0"></i>
+      <a href="index.html" class="logo d-flex align-items-center">
+        <span style="color:#ff3db1; font-family: cursive; font-weight: 400;">bani</span> <span style="color:#31D2F2; font-family: cursive; font-weight: 400;"> banai</span>
+        <!-- <img src="{{ asset('images/logo.png') }}" class="img-fluid" alt=""> -->
       </a>
-    
-      <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../public/assets/images/logo-mini.svg"
-          alt="logo" /></a>
-      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-        <span class="mdi mdi-sort-variant"></span>
-      </button>
-      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-      data-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
-    </div>
-  </div>
-  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-    <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-          <!-- <img src="../../../assets/images/faces/face5.jpg" alt="profile" /> -->
-          <span class="nav-profile-name">{{ Auth::User()?->name }}</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-        <a class="dropdown-item">
-        <i class="mdi mdi-user text-primary"></i>
-          
-            {{ Auth::User()?->role?->name }}
-</a>  
-        <a class="dropdown-item">
-            <i class="mdi mdi-cog text-primary"></i>
-            Settings
-          </a>
-    
-          <a class="dropdown-item" href="{{ route('logout') }}"
-          onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-            <i class="mdi mdi-logout text-primary"></i>
-           <span>Logout</span> 
-           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+      
+    </div><!-- End Logo -->
+
+
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell-fill"></i>
+          </a><!-- End Notification Icon -->      
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>Kevin Anderson</h6>
+              <span>Web Designer</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}"
+              onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
-          </a>
-        </div>
-      </li>
-    
-  </div>
-</nav>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('/home') }}">
-              <i class="mdi mdi-view-dashboard"></i>
-              <span class="menu-title"> Dashboard</span>
-            </a>
-          </li>
-          @if(Auth::check() && Auth::user()->role->slug === 'admin')
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url('/users') }}">
-      <i class="mdi mdi-account-multiple-plus"></i>
-      <span class="menu-title"> Users</span>
-    </a>
-  </li>
-@endif
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url('/stores') }}">
-      <i class="mdi mdi-store"></i>
-      <span class="menu-title"> Stores</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url('/orders') }}">
-      <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title"> Orders</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url('/stores') }}">
-      <i class="mdi mdi-home menu-icon"></i>
-      <span class="menu-title"> Menu</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url('/stores') }}">
-      <i class="mdi mdi-bell-ring"></i>
-      <span class="menu-title"> Notifications</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url('/fees') }}">
-      <i class="mdi mdi-cash-multiple"></i>
-      <span class="menu-title">  Fee</span>
-    </a>
-  </li>
+              </a>
+            </li>
 
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
 
+      </ul>
+    </nav><!-- End Icons Navigation -->
 
-        
-        </ul>
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/home') }}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      @if(Auth::user()?->role?->slug=='admin')
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/users') }}">
+          <i class="bi bi-grid"></i>
+          <span>Users</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      @endif
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/stores') }}">
+          <i class="bi bi-grid"></i>
+          <span>Stores</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/orders') }}">
+          <i class="bi bi-grid"></i>
+          <span>Orders</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/users') }}">
+          <i class="bi bi-grid"></i>
+          <span>Menu</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/users') }}">
+          <i class="bi bi-grid"></i>
+          <span>Notifications</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/fees') }}">
+          <i class="bi bi-grid"></i>
+          <span>Fees</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+<!-- 
+    <div class="pagetitle">
+      <h1>Blank Page</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Pages</li>
+          <li class="breadcrumb-item active">Blank</li>
+        </ol>
       </nav>
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
+    </div> -->
 
-          @yield('content')
-        </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <a href="https://www.bootstrapdash.com/" target="_blank">bootstrapdash.com </a>2021</span>
-          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Only the best <a href="https://www.bootstrapdash.com/" target="_blank"> Bootstrap dashboard  </a> templates</span>
-        </div>
-        </footer>
-        <!-- partial -->
-      </div>
-      <!-- main-panel ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
+    <section class="section">
+     @yield('content')
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+ 
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+
 </body>
+
 </html>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UserSignUpRequest;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -19,7 +21,7 @@ class UserController extends Controller
     function createUser(Request $request){
         $user=User::create([
             "name" => $request->name,
-            "role_id" => $request->role,
+            "role_id" => 2,
             "email" => $request->email,
             "password" =>Hash::make($request->password)
 
@@ -38,5 +40,26 @@ class UserController extends Controller
         ]);
     }
     
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return response()->json(['success' => true, 'message' => 'User deleted successfully']);
+    }
+
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        // Validate and update the user data
+        $user->update($request->validated());
+
+        return response()->json(['success' => true, 'message' => 'User updated successfully']);
+    }
+   
+    public function show($id) {
+        $user = User::find($id);
+        if ($user) {
+            return response()->json($user);
+        }
+        return response()->json(['message' => 'User not found'], 404);
+    }
 }
 
