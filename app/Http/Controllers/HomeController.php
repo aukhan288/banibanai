@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\User;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $users = User::where('role_id','!=',1)->count();
+        $title="Dashboard";
+        return view('home', compact('title','users'));
     }
 }
