@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\StoreController;
+
 
 
 
@@ -19,8 +19,3 @@ Route::get('/feeList', [App\Http\Controllers\FeeController::class, 'feeList']);
 Route::post('/fee-create', [App\Http\Controllers\FeeController::class, 'createFee'])->name('fee.create');
 Route::delete('/fees/{fee}', [App\Http\Controllers\FeeController::class, 'destroy']);
 
-Route::get('/storeList', [StoreController::class, 'storeList']);
-Route::post('/store-create', [StoreController::class, 'store'])->name('api.stores.store');
-Route::get('/stores/{store}', [StoreController::class, 'show'])->name('api.stores.show');
-Route::put('/stores/{store}', [StoreController::class, 'update'])->name('api.stores.update');
-Route::delete('/stores/{store}', [StoreController::class, 'destroy'])->name('api.stores.destroy');

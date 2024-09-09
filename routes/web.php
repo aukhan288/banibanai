@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
-Route::get('/stores', [App\Http\Controllers\StoreController::class, 'index'])->name('stores');
+Route::get('/stores', [StoreController::class, 'index'])->name('stores');
+Route::get('/storeList', [StoreController::class, 'storeList']);
+Route::post('/store-create', [StoreController::class, 'store']);
+Route::get('/stores/{id}', [StoreController::class, 'show']);
+Route::put('/stores/{id}', [StoreController::class, 'update']);
+Route::delete('/stores/{id}', [StoreController::class, 'destroy']);
 Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders');
 Route::get('/fees', [App\Http\Controllers\FeeController::class, 'index'])->name('fees');
