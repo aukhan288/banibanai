@@ -32,15 +32,8 @@ class Store extends Model
     ];
 
 
-
-    // Define relationships
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function storeType()
     {
-        return $this->belongsTo(StoreType::class);
+        return $this->belongsTo(StoreType::class, 'store_type_id');
     }
 }

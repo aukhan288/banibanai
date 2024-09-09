@@ -9,7 +9,7 @@
   <title>Bani Banai</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Favicons -->
   <link href="{{ asset('images/logo.png') }}" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -64,13 +64,12 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()?->name }}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>{{ Auth::user()?->role?->name }}</h6>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -86,26 +85,9 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+       
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
+       
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}"
               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -136,12 +118,14 @@
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @if(Auth::user()?->role?->slug=='admin')
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/users') }}">
           <i class="bi bi-grid"></i>
           <span>Users</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @endif
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/stores') }}">
           <i class="bi bi-grid"></i>
@@ -149,15 +133,15 @@
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('/orders') }}">
-          <i class="bi bi-grid"></i>
-          <span>Orders</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-      <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/users') }}">
           <i class="bi bi-grid"></i>
           <span>Menu</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/orders') }}">
+          <i class="bi bi-grid"></i>
+          <span>Orders</span>
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">

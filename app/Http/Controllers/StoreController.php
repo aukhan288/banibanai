@@ -8,6 +8,7 @@ use App\Models\StoreType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class StoreController extends Controller
 {
@@ -34,100 +35,101 @@ class StoreController extends Controller
     
     public function store(Request $request)
     {
-
-        // Handle the image upload
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail');
-    
-            // Check if the file is valid before calling store()
-            if ($thumbnail && $thumbnail->isValid()) {
-                $thumbnailPath = $thumbnail->store('thumbnails', 'public');
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid file upload.'
-                ], 400);
-            }
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'No file was uploaded.'
-            ], 400);
-        }
-
-        $store = Store::create([
-            'name' => $request->name,
-            'user_id' => $request->user_id,
-            'store_type_id' => $request->store_type_id,
-            'thumbnail' => Storage::url($thumbnailPath), // Save the path to the database
-            'min_delevery_time' => $request->min_delevery_time,
-            'min_order' => $request->min_order,
-            'rating' => $request->rating,
-            'opning_time' => $request->opning_time,
-            'address' => $request->address,
-            'lat' => $request->lat,
-            'long' => $request->long,
-            'ntn' => $request->ntn,
-            'delivery_type' => $request->delivery_type,
-            'delivery_fee' => $request->delivery_fee,
-            'delivery_radius' => $request->delivery_radius,
-            'commission' => $request->commission,
-            'platform_fee' => $request->platform_fee,
-            'venu_fee' => $request->venu_fee,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Store created successfully.',
-            'data' => $store
-        ], 201);
-    }
-
-    public function update(Request $request, Store $store)
-    {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'store_type_id' => 'required|integer',
-            'thumbnail' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the image if it's present
-            // Add validation rules for other fields
+            'store_type_id' => 'required|exists:store_types,id',
+            'ntn' => 'required|numeric',
+            'thumbnail' => 'nullable|image',
+            'opning_time' => 'required|date_format:H:i',
+            'address' => 'required|string',
+            'long' => 'required|numeric',
+            'lat' => 'required|numeric',
+            'min_delevery_time' => 'required|string',
+            'min_order' => 'required|numeric',
+            'delivery_type' => 'required|string',
+            'delivery_radius' => 'required|numeric',
+            'commission' => 'required|numeric',
+            'platform_fee' => 'required|numeric',
+            'delivery_fee' => 'required|numeric',
+            'venu_fee' => 'nullable|numeric',
         ]);
 
-        // Handle the image upload
-        if ($request->hasFile('thumbnail')) {
-            // Delete the old thumbnail if it exists
-            if ($store->thumbnail) {
-                Storage::disk('public')->delete($store->thumbnail);
-            }
-
-            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
-            $store->thumbnail = $thumbnailPath;
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $store->update([
-            'name' => $request->name,
-            'user_id' => $request->user_id,
-            'store_type_id' => $request->store_type_id,
-            'min_delevery_time' => $request->min_delevery_time,
-            'min_order' => $request->min_order,
-            'rating' => $request->rating,
-            'opning_time' => $request->opning_time,
-            'address' => $request->address,
-            'lat' => $request->lat,
-            'long' => $request->long,
-            'ntn' => $request->ntn,
-            'delivery_type' => $request->delivery_type,
-            'delivery_fee' => $request->delivery_fee,
-            'delivery_radius' => $request->delivery_radius,
-            'commission' => $request->commission,
-            'platform_fee' => $request->platform_fee,
-            'venu_fee' => $request->venu_fee,
-        ]);
+        $store = new Store($request->except('thumbnail'));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Store updated successfully.',
-            'data' => $store
-        ]);
+        if ($request->hasFile('thumbnail')) {
+            $store->thumbnail = $request->file('thumbnail')->store('thumbnails');
+        }
+
+
+        $store->user_id=Auth::id();
+        $store->save();
+
+        return response()->json(['message' => 'Store created successfully'], 201);
     }
 
+    // Display the specified resource
+    public function show($id)
+    {
+        $store = Store::with('storeType')->findOrFail($id);
+        return response()->json($store);
+    }
+
+    // Update the specified resource in storage
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'store_type_id' => 'required|exists:store_types,id',
+            'ntn' => 'required|numeric',
+            'thumbnail' => 'nullable|image',
+            'opning_time' => 'required',
+            'address' => 'required|string',
+            'long' => 'required|numeric',
+            'lat' => 'required|numeric',
+            'min_delevery_time' => 'required|string',
+            'min_order' => 'required|numeric',
+            'delivery_type' => 'required|string',
+            'delivery_radius' => 'required|numeric',
+            'commission' => 'required|numeric',
+            'platform_fee' => 'required|numeric',
+            'delivery_fee' => 'required|numeric',
+            'venu_fee' => 'nullable|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $store = Store::findOrFail($id);
+        $store->fill($request->except('thumbnail'));
+
+        if ($request->hasFile('thumbnail')) {
+            if ($store->thumbnail) {
+                Storage::delete($store->thumbnail);
+            }
+            $store->thumbnail = $request->file('thumbnail')->store('thumbnails');
+        }
+
+        $store->save();
+
+        return response()->json(['message' => 'Store updated successfully']);
+    }
+
+    // Remove the specified resource from storage
+    public function destroy($id)
+    {
+        $store = Store::findOrFail($id);
+
+        if ($store->thumbnail) {
+            Storage::delete($store->thumbnail);
+        }
+
+        $store->delete();
+
+        return response()->json(['message' => 'Store deleted successfully']);
+    }
 }

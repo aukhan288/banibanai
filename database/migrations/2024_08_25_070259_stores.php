@@ -19,7 +19,7 @@ return new class extends Migration
         $table->string('thumbnail');
         $table->string('min_delevery_time');
         $table->double('min_order');
-        $table->double('rating');
+        $table->double('rating')->nullable();
         $table->time('opning_time');
         $table->string('address');
         $table->double('lat');

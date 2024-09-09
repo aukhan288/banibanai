@@ -6,6 +6,7 @@
 </div>
 
 <div class="col-xxl-4 col-md-3">
+@if(Auth::user()?->role?->slug=='admin')
               <div class="card info-card sales-card">
                 <div class="card-body">
                   <h5 class="card-title">Users</h5>
@@ -22,5 +23,6 @@
                 </div>
 
               </div>
+              @endif
             </div>
 @endsection
