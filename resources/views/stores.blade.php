@@ -162,10 +162,22 @@ $(document).ready(function() {
     title: 'Status',
     data: 'name',
     render: function(data, type, row) {
-
-     return` <span style="background-color:${row?.store_status?.color}; color:#FFF; font-size:12px; padding:3px 5px; border-radius:25px">
+      const isAdmin = `{{ Auth::user()?->role?->slug == 'admin' ? 'true' : 'false' }}`;
+      if(isAdmin){
+        return `<select class="form-select form-select-md" name="store_type_id" id="store_type_id">
+@foreach($storeStatuses as $st)
+    <option value="{{ $st->id }}" {{ $st->id == ${row->store_status->id} ? 'selected' : '' }}>
+        {{ $st->name }}
+    </option>
+@endforeach
+ 
+              </select>`
+      }else{
+       return `   <span style="background-color:${row?.store_status?.color}; color:#FFF; font-size:12px; padding:3px 5px; border-radius:25px">
                     ${row?.store_status?.name}
-                </span>`
+                </span>` 
+      }
+  
     }
 },
 
