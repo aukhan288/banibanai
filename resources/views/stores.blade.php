@@ -158,6 +158,17 @@ $(document).ready(function() {
         }
       },
       { title: 'Name', data: 'name' },
+      {
+    title: 'Status',
+    data: 'name',
+    render: function(data, type, row) {
+
+     return` <span style="background-color:${row?.store_status?.color}; color:#FFF; font-size:12px; padding:3px 5px; border-radius:25px">
+                    ${row?.store_status?.name}
+                </span>`
+    }
+},
+
       { title: 'NTN', data: 'ntn' },
       { 
         title: 'Store Type',
