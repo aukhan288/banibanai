@@ -163,9 +163,12 @@ $(document).ready(function() {
     data: 'name',
     render: function(data, type, row) {
       const isAdmin = `{{ Auth::user()?->role?->slug == 'admin' ? 'true' : 'false' }}`;
+      const storeStatuses =`{{$storeStatuses}};`
       if(isAdmin){
         return `<select class="form-select form-select-md" name="store_type_id" id="store_type_id">
-@foreach($storeStatuses as $st)
+storeStatuses?map(s=>{
+
+})
     <option value="{{ $st->id }}" {{ $st->id == ${row->store_status->id} ? 'selected' : '' }}>
         {{ $st->name }}
     </option>
