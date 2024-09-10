@@ -18,4 +18,5 @@ Route::put('/users/{user}', [UserController::class, 'update']);
 Route::get('/feeList', [App\Http\Controllers\FeeController::class, 'feeList']);
 Route::post('/fee-create', [App\Http\Controllers\FeeController::class, 'createFee'])->name('fee.create');
 Route::delete('/fees/{fee}', [App\Http\Controllers\FeeController::class, 'destroy']);
-
+Route::get('/fees/{fee}', [App\Http\Controllers\FeeController::class, 'show']);
+Route::put('/fees/{fee}', [App\Http\Controllers\FeeController::class, 'update']);

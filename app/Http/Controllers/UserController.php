@@ -14,14 +14,14 @@ class UserController extends Controller
 {
     function index(){
         $title='Users';
-        $roles = Role::select(['id', 'name'])->get();
+        $roles = Role::Where('slug','!=','admin')->select(['id', 'name'])->get();
         return View('users',compact('title','roles'));
     }
     
     function createUser(Request $request){
         $user=User::create([
             "name" => $request->name,
-            "role_id" => 2,
+            "role_id" => $request->role,
             "email" => $request->email,
             "password" =>Hash::make($request->password)
 

@@ -33,7 +33,7 @@
         <form id="createFeeForm" action="">
           <div class="mb-3">
             <label for="priceFrom" class="form-label">Price From</label>
-            <input type="text" class="form-control" name="priceFrom" id="" placeholder="Price From" required />
+            <input type="n" class="form-control" name="priceFrom" id="" placeholder="Price From" required />
           </div>
           <div class="mb-3">
             <label for="priceTo" class="form-label">Price To</label>
@@ -41,7 +41,7 @@
           </div>
           <div class="mb-3">
             <label for="commision" class="form-label">Commision</label>
-            <input type="text" class="form-control" name="commision" id="commision" placeholder="Commision" required />
+            <input type="number" class="form-control" name="commision" id="commision" placeholder="Commision" required />
           </div>
      
           <div class="modal-footer">
@@ -147,6 +147,51 @@ window.deleteFee = function(id) {
       }
     });
   };
+  function editFee(id) {
+    // Fetch the fee data from your API
+    $.ajax({
+        url: `/api/fees/${id}`,
+        type: 'GET',
+        success: function(response) {
+            // Populate the form fields with the fetched data
+            $('#modalId').modal('show'); // Show the modal
+            $('#modalTitleId').text('Edit Fee'); // Change the modal title to 'Edit Fee'
+            $('input[name="priceFrom"]').val(response.from); 
+            $('input[name="priceTo"]').val(response.to);
+            $('input[name="commision"]').val(response.commission);
+
+            // Update the form action to the update URL
+            $('#createFeeForm').off('submit').on('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                $.ajax({
+                    url: `/api/fees/${id}`, // Update the fee using the appropriate endpoint
+                    type: 'PUT',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#feesTable').DataTable().ajax.reload(); // Reload DataTable data
+                        $('#modalId').modal('hide'); // Close the modal
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Fee updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('An error occurred while updating the fee');
+                    }
+                });
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            alert('An error occurred while fetching the fee data');
+        }
+    });
+}
 
 </script>
 

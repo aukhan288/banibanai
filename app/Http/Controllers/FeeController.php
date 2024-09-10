@@ -38,4 +38,30 @@ class FeeController extends Controller
         $fee->delete();
         return response()->json(['success' => true, 'message' => 'User deleted successfully']);
     }
+
+    public function show($id)
+    {
+        $fee = Fee::findOrFail($id);
+
+        return response()->json($fee);
+    }
+
+    public function update(Request $request, $id)
+{
+   
+
+    $fee = Fee::findOrFail($id);
+    $fee->update([
+        'from' => $request->priceFrom,
+        'to' => $request->priceTo,
+        'commission' => $request->commision,
+    ]);
+
+    return response()->json([
+        'message' => 'Fee updated successfully',
+        'data' => $fee
+    ]);
+}
+
+
 }
