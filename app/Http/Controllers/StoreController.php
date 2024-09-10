@@ -23,8 +23,12 @@ class StoreController extends Controller
     
     function storeList(Request $request)
     {
-        $users = Store::with('storeType')->paginate($request->input('length', 10)); // Default is 10 records per page
-    
+        $users = Store::when(Auth::user()->role->slug == 'vendor', function($q) {
+            return $q->where('user_id', Auth::id());
+        })
+        ->with('storeType', 'storeStatus')
+        ->paginate($request->input('length', 10)); // Default is 10 records per page
+        
         return response()->json([
             'draw' => intval($request->input('draw')),
             'recordsTotal' => $users->total(),
