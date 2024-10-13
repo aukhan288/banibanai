@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +32,16 @@ Route::put('/stores/{id}', [StoreController::class, 'update']);
 Route::delete('/stores/{id}', [StoreController::class, 'destroy']);
 Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders');
 Route::get('/fees', [App\Http\Controllers\FeeController::class, 'index'])->name('fees');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+Route::get('/categoryList', [CategoryController::class, 'CategoryList']);
+Route::post('/category-create', [CategoryController::class, 'store']);
+Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::put('/category/{id}', [CategoryController::class, 'update'])->name('categories.update');
+Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/productList', [ProductController::class, 'ProductList']);
+Route::post('/product-create', [ProductController::class, 'store']);
+Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/product/{id}', [ProductController::class, 'update'])->name('products.update');
+Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+

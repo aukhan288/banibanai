@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <span class="pagetitle">{{ $title }}</span>
-  @if(Auth::user()?->role?->slug == 'vendor')
+  @if(Auth::user()?->role?->slug == 'catering')
     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#storeModal" data-action="create">Add New</button>
   @endif
 </div>
@@ -40,12 +40,7 @@
           </div>
           <div class="row mb-3">
             <div class="col-sm-6">
-              <label for="store_type_id" class="form-label">Store Type</label>
-              <select class="form-select form-select-md" name="store_type_id" id="store_type_id">
-                @foreach($storeType as $st)
-                  <option value="{{ $st->id }}">{{ $st->name }}</option>
-                @endforeach  
-              </select>
+         
             </div>
             <div class="col-sm-6">
               <label for="ntn" class="form-label">NTN</label>
@@ -150,7 +145,7 @@ $(document).ready(function() {
       }
     },
     columns: [
-      { 
+      {
         title: 'Logo',
         data: 'thumbnail',
         render: function(data) {
@@ -158,50 +153,29 @@ $(document).ready(function() {
         }
       },
       { title: 'Name', data: 'name' },
-      {
-    title: 'Status',
-    data: 'name',
-    render: function(data, type, row) {
-      const isAdmin = `{{ Auth::user()?->role?->slug == 'admin' ? 'true' : 'false' }}`;
-      const storeStatuses =`{{$storeStatuses}};`
-      if(isAdmin){
-        return `<select class="form-select form-select-md" name="store_type_id" id="store_type_id">
-storeStatuses?map(s=>{
-
-})
-    <option value="{{ $st->id }}" {{ $st->id == ${row->store_status->id} ? 'selected' : '' }}>
-        {{ $st->name }}
-    </option>
-@endforeach
- 
-              </select>`
-      }else{
-       return `   <span style="background-color:${row?.store_status?.color}; color:#FFF; font-size:12px; padding:3px 5px; border-radius:25px">
-                    ${row?.store_status?.name}
-                </span>` 
-      }
-  
-    }
-},
-
+      // {
+      //   title: 'Status',
+      //   data: 'store_status',
+      //   render: function(data, type, row) {
+      //     console.log(row);
+          
+      //     const isAdmin = `{{ Auth::user()?->role?->slug == 'admin' ? 'true' : 'false' }}`;
+       
+      //   }
+      // },
       { title: 'NTN', data: 'ntn' },
-      { 
-        title: 'Store Type',
-        data: 'store_type',
-        render: function(data) {
-          return data ? data.name : '';
-        }
-      },
       { title: 'Opening Time', data: 'opning_time' },
-      { 
+      {
         title: 'Actions',
         data: null,
         render: function(data, type, row) {
           return `
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="btn-group" role="group">
               <button type="button" class="btn btn-sm btn-info" onclick="viewStore(${row.id})"><i class="bi bi-eye"></i></button>
-              <button type="button" class="btn btn-sm btn-warning" onclick="editStore(${row.id})"><i class="bi bi-pencil text-white"></i></button>
-              <button type="button" class="btn btn-sm btn-danger btn-delete" onclick="deleteStore(${row.id})"><i class="bi bi-trash"></i></button>
+              @if(Auth::user()?->role?->slug == 'vendor')
+                <button type="button" class="btn btn-sm btn-warning" onclick="editStore(${row.id})"><i class="bi bi-pencil"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" onclick="deleteStore(${row.id})"><i class="bi bi-trash"></i></button>
+              @endif
             </div>`;
         }
       }
@@ -211,34 +185,21 @@ storeStatuses?map(s=>{
     pagingType: "simple_numbers"
   });
 
-  // Handle form submission
   $('#storeForm').on('submit', function(event) {
     event.preventDefault();
-    var action = $('#storeModal').data('action');
-    var storeId = $('#storeId').val();
-    var url = action === 'create' ? "/store-create" : `/stores/${storeId}`;
-    var method = action === 'create' ? "POST" : "PUT";
+    var id = $('#storeId').val();
+    var url = id ? `/stores/${id}` : '/store-create';
+    var method = id ? 'PUT' : 'POST';
 
-    var formData = new FormData(this);
     $.ajax({
       url: url,
       type: method,
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      data: formData,
+      data: new FormData(this),
       processData: false,
       contentType: false,
       success: function(response) {
-        table.ajax.reload();
         $('#storeModal').modal('hide');
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: action === 'create' ? "Store created successfully" : "Store updated successfully",
-          showConfirmButton: false,
-          timer: 1500
-        });
+        table.ajax.reload();
       },
       error: function(xhr) {
         var errors = xhr.responseJSON.errors;
@@ -254,116 +215,13 @@ storeStatuses?map(s=>{
     });
   });
 
-  // View store details
-  window.viewStore = function(id) {
-    $.ajax({
-      url: `/stores/${id}`,
-      type: 'GET',
-      success: function(store) {
-        $('#storeId').val(store.id);
-        $('#storeName').val(store.name).prop('readonly', true);
-        $('#store_type_id').val(store.store_type_id).prop('disabled', true);
-        $('#storeNtn').val(store.ntn).prop('readonly', true);
-        $('#storeThumbnail').prop('disabled', true);
-        $('#storeMinDeleveryTime').val(store.min_delevery_time).prop('readonly', true);
-        $('#storeMinOrder').val(store.min_order).prop('readonly', true);
-        $('#storeOpeningTime').val(store.opning_time).prop('readonly', true);
-        $('#storeAddress').val(store.address).prop('readonly', true);
-        $('#storeLat').val(store.lat).prop('readonly', true);
-        $('#storeLong').val(store.long).prop('readonly', true);
-        $('#storeDeliveryType').val(store.delivery_type).prop('readonly', true);
-        $('#storeDeliveryFee').val(store.delivery_fee).prop('readonly', true);
-        $('#storeDeliveryRadius').val(store.delivery_radius).prop('readonly', true);
-        $('#storeCommission').val(store.commission).prop('readonly', true);
-        $('#storePlatformFee').val(store.platform_fee).prop('readonly', true);
-        $('#storeVenuFee').val(store.venu_fee).prop('readonly', true);
-        $('#modalTitleId').text('View Store');
-        $('#storeForm').find(':input').prop('readonly', true);
-        $('#storeModal .btn-primary').hide();
-        $('#storeModal').modal('show');
-      },
-      error: function(xhr) {
-        console.error(xhr.responseText);
-        alert('An error occurred while fetching store data');
-      }
-    });
-  };
-
-  // Edit store details
-  window.editStore = function(id) {
-    $.ajax({
-      url: `/stores/${id}`,
-      type: 'GET',
-      success: function(store) {
-        $('#storeId').val(store.id);
-        $('#storeName').val(store.name).prop('readonly', false);
-        $('#store_type_id').val(store.store_type_id).prop('disabled', false);
-        $('#storeNtn').val(store.ntn).prop('readonly', false);
-        $('#storeThumbnail').prop('disabled', false);
-        $('#storeMinDeleveryTime').val(store.min_delevery_time).prop('readonly', false);
-        $('#storeMinOrder').val(store.min_order).prop('readonly', false);
-        $('#storeOpeningTime').val(store.opning_time).prop('readonly', false);
-        $('#storeAddress').val(store.address).prop('readonly', false);
-        $('#storeLat').val(store.lat).prop('readonly', false);
-        $('#storeLong').val(store.long).prop('readonly', false);
-        $('#storeDeliveryType').val(store.delivery_type).prop('readonly', false);
-        $('#storeDeliveryFee').val(store.delivery_fee).prop('readonly', false);
-        $('#storeDeliveryRadius').val(store.delivery_radius).prop('readonly', false);
-        $('#storeCommission').val(store.commission).prop('readonly', false);
-        $('#storePlatformFee').val(store.platform_fee).prop('readonly', false);
-        $('#storeVenuFee').val(store.venu_fee).prop('readonly', false);
-        $('#modalTitleId').text('Edit Store');
-        $('#storeForm').find(':input').prop('readonly', false);
-        $('#storeModal .btn-primary').text('Save Changes').show();
-        $('#storeModal').modal('show');
-      },
-      error: function(xhr) {
-        console.error(xhr.responseText);
-        alert('An error occurred while fetching store data');
-      }
-    });
-  };
-
-  // Delete store
-  window.deleteStore = function(id) {
-    if (confirm('Are you sure you want to delete this store?')) {
-      $.ajax({
-        url: `/stores/${id}`,
-        type: 'DELETE',
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-          table.ajax.reload();
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Store deleted successfully",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        },
-        error: function(xhr) {
-          alert('Error deleting store');
-          console.log(xhr.responseText);
-        }
-      });
-    }
-  };
-
-  // Handle modal show event
-  $('#storeModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    var action = button.data('action');
-    $('#storeModal').data('action', action);
-
-    if (action === 'view') {
-      $('#storeModal .btn-primary').hide();
-    } else {
-      $('#storeModal .btn-primary').show();
-    }
+  $('#storeModal').on('hidden.bs.modal', function() {
+    $('#storeForm')[0].reset();
     $('#storeFormErrors').addClass('d-none');
+    $('#storeId').val('');
   });
 });
+
+// Define your viewStore, editStore, deleteStore, and updateStoreStatus functions here
 </script>
 @endsection

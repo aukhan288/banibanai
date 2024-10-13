@@ -133,9 +133,15 @@
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('/users') }}">
+        <a class="nav-link collapsed" href="{{ url('/categories') }}">
           <i class="bi bi-grid"></i>
-          <span>Menu</span>
+          <span>Categories</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/poducts') }}">
+          <i class="bi bi-grid"></i>
+          <span>Products</span>
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">

@@ -15,7 +15,6 @@ return new class extends Migration
         $table->id();
         $table->string('name');
         $table->unsignedBigInteger('user_id');
-        $table->unsignedBigInteger('store_type_id');
         $table->string('thumbnail');
         $table->string('min_delevery_time');
         $table->double('min_order');
@@ -30,6 +29,7 @@ return new class extends Migration
         $table->double('delivery_radius');
         $table->unsignedInteger('commission');
         $table->unsignedInteger('platform_fee');
+        $table->unsignedInteger('store_status')->default(1);
         $table->unsignedInteger('venu_fee')->nullable();
         $table->timestamps();
       });  

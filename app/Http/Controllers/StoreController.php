@@ -14,19 +14,19 @@ class StoreController extends Controller
 {
     function index(){
         $title='Stores';
-        $storeType = StoreType::select(['id', 'name'])->get();
+        // $storeType = StoreType::select(['id', 'name'])->get();
         $storeStatuses = DB::select('select * from store_statuses');
-        return View('stores',compact('title','storeType','storeStatuses'));
+        return View('stores',compact('title','storeStatuses'));
     }
 
 
     
     function storeList(Request $request)
     {
-        $users = Store::when(Auth::user()->role->slug == 'vendor', function($q) {
+        $users = Store::when(Auth::user()->role->slug == 'catering', function($q) {
             return $q->where('user_id', Auth::id());
         })
-        ->with('storeType', 'storeStatus')
+        ->with('storeStatus')
         ->paginate($request->input('length', 10)); // Default is 10 records per page
         
         return response()->json([
@@ -41,7 +41,6 @@ class StoreController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'store_type_id' => 'required|exists:store_types,id',
             'ntn' => 'required|numeric',
             'thumbnail' => 'nullable|image',
             'opning_time' => 'required|date_format:H:i',
