@@ -36,4 +36,8 @@ class Store extends Model
     {
         return $this->belongsTo(StoreType::class, 'store_type_id');
     }
+    public function storeStatus()
+    {
+        return $this->belongsTo(StoreStatus::class, 'status');
+    }
 }
