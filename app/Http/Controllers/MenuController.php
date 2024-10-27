@@ -18,7 +18,7 @@ class MenuController extends Controller
         
         return response()->json([
             'draw' => intval($request->input('draw')),
-            'recordsTotal' => $pmenus->total(),
+            'recordsTotal' => $menus->total(),
             'recordsFiltered' => $menus->total(),
             'data' => $menus->items(),
         ]);

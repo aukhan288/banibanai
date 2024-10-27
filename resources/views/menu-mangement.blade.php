@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <span class="pagetitle">{{ $title }}</span>
-  <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userModal" data-action="create">Add New</button>
+  <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#menuModal" data-action="create">Add New</button>
 </div>
 
 <section class="section">
@@ -12,7 +12,7 @@
       <div class="card">
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped" id="usersTable">
+            <table class="table table-striped" id="menusTable">
             </table>
           </div>
         </div>
@@ -22,11 +22,11 @@
 </section>
 
 <!-- User Modal -->
-<div class="modal fade" id="userModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="userModalTitle" aria-hidden="true">
+<div class="modal fade" id="menuModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="menuModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="userModalTitle">User</h5>
+        <h5 class="modal-title" id="menuModalTitle">Menu</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -58,12 +58,12 @@
 
 <script>
 $(document).ready(function() {
-  var table = $('#usersTable').DataTable({
+  var table = $('#menusTable').DataTable({
     'responsive': true,
     "processing": true,
     "serverSide": true,
     "ajax": {
-      "url": "/api/userList/",
+      "url": "/menuList/",
       "type": "GET",
       "dataSrc": function(json) {
         console.log(json);
@@ -84,9 +84,9 @@ $(document).ready(function() {
         "render": function(data, type, row) {
           return `
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm btn-info" onclick="viewUser(${row?.id})"><i class="bi bi-eye"></i></button>
-              <button type="button" class="btn btn-sm btn-warning" onclick="editUser(${row?.id})"><i class="bi bi-pencil text-white"></i></button>
-              <button type="button" class="btn btn-sm btn-danger btn-delete" onclick="deleteUser(${row?.id})"><i class="bi bi-trash"></i></button>
+              <button type="button" class="btn btn-sm btn-info" onclick="viewMenu(${row?.id})"><i class="bi bi-eye"></i></button>
+              <button type="button" class="btn btn-sm btn-warning" onclick="editMenu(${row?.id})"><i class="bi bi-pencil text-white"></i></button>
+              <button type="button" class="btn btn-sm btn-danger btn-delete" onclick="deleteMenu(${row?.id})"><i class="bi bi-trash"></i></button>
             </div>`;
         }
       }
@@ -97,11 +97,11 @@ $(document).ready(function() {
   });
 
   // Handle the form submission for creating and updating a user
-  $('#userForm').on('submit', function(event) {
+  $('#menuForm').on('submit', function(event) {
     event.preventDefault();
-    var action = $('#userModal').data('action');
-    var userId = $('#userId').val();
-    var url = action === 'create' ? "/api/user-create" : `/api/users/${userId}`;
+    var action = $('#menuModal').data('action');
+    var userId = $('#menuId').val();
+    var url = action === 'create' ? "/menu-create" : `/menu/${menuId}`;
     var method = action === 'create' ? "POST" : "PUT";
 
     $.ajax({
@@ -110,11 +110,11 @@ $(document).ready(function() {
       data: $(this).serialize(),
       success: function(response) {
         table.ajax.reload();
-        $('#userModal').modal('hide');
+        $('#menuModal').modal('hide');
         Swal.fire({
           position: "center",
           icon: "success",
-          title: action === 'create' ? "User created successfully" : "User updated successfully",
+          title: action === 'create' ? "Menu created successfully" : "Menu updated successfully",
           showConfirmButton: false,
           timer: 1500
         });
@@ -136,7 +136,7 @@ $(document).ready(function() {
   // Function to open the modal for viewing a user
   window.viewUser = function(id) {
     $.ajax({
-      url: `/api/users/${id}`,
+      url: `/menus/${id}`,
       type: 'GET',
       success: function(user) {
         $('#userId').val(user.id);
@@ -156,9 +156,9 @@ $(document).ready(function() {
   };
 
   // Function to open the modal for editing a user
-  window.editUser = function(id) {
+  window.editMenu = function(id) {
     $.ajax({
-      url: `/api/users/${id}`,
+      url: `/menu/${id}`,
       type: 'GET',
       success: function(user) {
         $('#userId').val(user.id);
@@ -178,12 +178,12 @@ $(document).ready(function() {
   };
 
   // Function to delete a user
-  window.deleteUser = function(id) {
-    var table = $('#usersTable').DataTable();
+  window.deleteMenu = function(id) {
+    var table = $('#menusTable').DataTable();
     var currentPage = table.page();
 
     $.ajax({
-      url: `/api/users/${id}`,
+      url: `/menu/${id}`,
       type: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -207,10 +207,10 @@ $(document).ready(function() {
   };
 
   // Handle the modal toggle to set form action
-  $('#userModal').on('show.bs.modal', function (event) {
+  $('#menuModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Button that triggered the modal
     var action = button.data('action'); // Extract info from data-* attributes
-    $('#userModal').data('action', action);
+    $('#menuModal').data('action', action);
   });
 });
 </script>
