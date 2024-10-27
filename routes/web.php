@@ -24,7 +24,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::post('/store-create', [StoreController::class, 'store']);
 Route::post('/user-create', [UserController::class, 'createUser'])->name('user.create');
-// Route::middleware(['checkStore'])->group(function () {
+Route::middleware(['checkStore'])->group(function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
 Route::get('/stores', [StoreController::class, 'index'])->name('stores');
@@ -54,4 +54,4 @@ Route::get('/menu/{id}/edit', [MenuController::class, 'edit'])->name('menu.edit'
 Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
 Route::delete('/menu/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
 
-// });
+});
