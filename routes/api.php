@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/user-create', [UserController::class, 'createUser'])->name('user.create');
+
 Route::get('/userList', [UserController::class, 'userList']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
 Route::get('/users/{user}', [UserController::class, 'show']);
