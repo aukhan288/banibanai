@@ -23,7 +23,7 @@ class StoreController extends Controller
     
     function storeList(Request $request)
     {
-        $users = Store::when(Auth::user()->role->slug == 'catering', function($q) {
+        $users = Store::when(Auth::user()->role->slug == 'catering' || Auth::user()->role->slug == 'chairity' || Auth::user()->role->slug == 'venu', function($q) {
             return $q->where('user_id', Auth::id());
         })
         ->with('storeStatus')

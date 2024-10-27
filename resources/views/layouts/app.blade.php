@@ -132,6 +132,7 @@
           <span>Stores</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @if(Auth::user()?->role?->slug=='admin')
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/categories') }}">
           <i class="bi bi-grid"></i>
@@ -139,11 +140,20 @@
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('/poducts') }}">
+        <a class="nav-link collapsed" href="{{ url('/products') }}">
           <i class="bi bi-grid"></i>
           <span>Products</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @endif
+      @if( in_array(Auth::user()->role->slug, ['catering', 'chairity', 'venu']))
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('/menu-mangement') }}">
+          <i class="bi bi-grid"></i>
+          <span>Menu management</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      @endif
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/orders') }}">
           <i class="bi bi-grid"></i>
