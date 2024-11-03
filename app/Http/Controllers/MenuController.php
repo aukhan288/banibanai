@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Store;
+use App\Models\Category;
+use Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -11,7 +14,9 @@ class MenuController extends Controller
 {
     function index(){
         $title='Menu Mangement';
-        return view('menu-mangement',compact('title'));
+        $stores=Store::where('user_id',Auth::user()?->id)->get();
+        $Categories=Category::all();
+        return view('menu-mangement',compact('title','stores','Categories'));
     }
     public function menuList(Request $request) {
         $menus = Menu::paginate($request->input('length', 10));

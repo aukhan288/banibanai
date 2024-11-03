@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <span class="pagetitle">{{ $title }}</span>
-  @if(Auth::user()?->role?->slug == 'catering')
+  @if(Auth::user()?->role?->slug == 'admin')
     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#storeModal" data-action="create">Add New Product</button>
   @endif
 </div>
@@ -48,7 +48,14 @@
             <label for="name" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="name" name="name" required>
           </div>
-          
+          <div class="mb-3">
+          <label for="category" class="form-label">Categories</label>
+              <select class="form-select form-select-md" name="category" id="category">
+                @foreach($categories as $category)
+                  <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach  
+              </select>
+          </div>
           <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control" id="description" name="description"></textarea>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -11,7 +12,8 @@ class ProductController extends Controller
 {
     public function index() {
         $title = "Products";
-        return view('products', compact('title')); // Ensure the view name matches your structure
+        $categories=Category::orderBy('name','asc')->get(['id','name']);
+        return view('products', compact('title','categories')); // Ensure the view name matches your structure
     }
 
     public function productList(Request $request) {
@@ -26,14 +28,16 @@ class ProductController extends Controller
     }
 
     public function store(Request $request) {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'description' => 'nullable|string',
+        //     'category' => 'require|numeric',
+        //     'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // ]);
 
         $product = new Product();
         $product->name = $request->name;
+        $product->category_id = $request->category;
         $product->description = $request->description;
 
         if ($request->hasFile('thumbnail')) {
@@ -83,5 +87,37 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['success' => 'product deleted successfully.']);
+    }
+    public function ProductsByCategory($category) {
+        $category = Category::find($category);
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'status' => 404,
+                'message' => 'Category not found'
+            ], 404);
+        }
+    
+        // Get the products for the specified category
+        $products = Product::where('category_id', $category->id)->get();
+    
+        // Check if products were found
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'status' => 200,
+                'message' => 'No products found for this category',
+                'data' => []
+            ]);
+        }
+    
+        // Return the products as a JSON response
+        return response()->json([
+            'success' => true,
+            'status' => 200,
+            'message' => 'Products retrieved successfully',
+            'data' => $products
+        ]);
     }
 }
