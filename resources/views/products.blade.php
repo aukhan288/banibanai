@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <span class="pagetitle">{{ $title }}</span>
-  @if(Auth::user()?->role?->slug == 'admin')
+  @if( in_array(Auth::user()->role->slug, ['catering', 'chairity', 'venu']))
     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#storeModal" data-action="create">Add New Product</button>
   @endif
 </div>

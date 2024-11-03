@@ -132,7 +132,7 @@
           <span>Stores</span>
         </a>
       </li><!-- End Dashboard Nav -->
-      @if(Auth::user()?->role?->slug=='admin')
+      @if( in_array(Auth::user()->role->slug, ['catering', 'chairity', 'venu']))
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/categories') }}">
           <i class="bi bi-grid"></i>

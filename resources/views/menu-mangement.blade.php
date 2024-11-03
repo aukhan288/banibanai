@@ -113,14 +113,13 @@ $(document).ready(function() {
       }
     },
     "columns": [
-      { 'title': 'Name', "data": "name" },
-      { 'title': 'Email', "data": "email" },
-      { 'title': 'Role',
-        "data": "role",
-        render: function(data, type, row) {
-          return `${row?.role?.name}`;
+      { 'title': 'Thumbnail', "data": "",
+        "render": function(data, type, row) {
+          return `<img src=${row?.thumbnail}/>`
         }
-      },
+       },
+      { 'title': 'Name', "data": "name" },
+      { 'title': 'Discription','data':'description'},
       { 'title': 'Actions',
         "data": null,
         "render": function(data, type, row) {
@@ -139,7 +138,7 @@ $(document).ready(function() {
   });
 
   // Handle the form submission for creating and updating a user
-  $('#menuForm').on('submit', function(event) {
+  $('#menuForm_1').on('submit', function(event) {
     event.preventDefault();
     var action = $('#menuModal').data('action');
     var userId = $('#menuId').val();

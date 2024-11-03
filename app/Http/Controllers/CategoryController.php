@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 
 class CategoryController extends Controller
 {
     public function index() {
         $title = "Categories";
-        $categories = Category::all();
+        $categories = Category::where('user_id',Auth::user()?->id)->get();
         return view('categories', compact('title','categories')); // Ensure the view name matches your structure
     }
 
     public function categoryList(Request $request) {
-        $categories = Category::paginate($request->input('length', 10));
+        $categories = Category::where('user_id',Auth::user()?->id)->paginate($request->input('length', 10));
         
         return response()->json([
             'draw' => intval($request->input('draw')),
@@ -32,6 +33,7 @@ class CategoryController extends Controller
         ]);
 
         $category = new Category();
+        $category->user_id = Auth::user()?->id;
         $category->name = $request->name;
         $category->parent_id = $request->parent_id;
         $category->description = $request->description;

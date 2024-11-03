@@ -6,18 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
-
+use Auth;
 
 class ProductController extends Controller
 {
     public function index() {
         $title = "Products";
-        $categories=Category::orderBy('name','asc')->get(['id','name']);
+        $categories=Category::where('user_id', Auth::user()?->id)->orderBy('name','asc')->get(['id','name']);
         return view('products', compact('title','categories')); // Ensure the view name matches your structure
     }
 
     public function productList(Request $request) {
-        $products = Product::paginate($request->input('length', 10));
+        $categoriesId = Category::where('user_id', Auth::user()?->id)->pluck('id')->toArray();
+        
+        $products = Product::whereIn('category_id',$categoriesId)->paginate($request->input('length', 10));
         
         return response()->json([
             'draw' => intval($request->input('draw')),

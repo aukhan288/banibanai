@@ -15,11 +15,13 @@ class MenuController extends Controller
     function index(){
         $title='Menu Mangement';
         $stores=Store::where('user_id',Auth::user()?->id)->get();
-        $Categories=Category::all();
+        $Categories=Category::where('user_id', Auth::user()?->id)->get();
         return view('menu-mangement',compact('title','stores','Categories'));
     }
     public function menuList(Request $request) {
-        $menus = Menu::paginate($request->input('length', 10));
+        $storeIds = Store::where('user_id', Auth::user()?->id)->pluck('id')->toArray();
+        $menus = Menu::whereIn('store_id',$storeIds)->paginate($request->input('length', 10));
+
         
         return response()->json([
             'draw' => intval($request->input('draw')),
@@ -30,6 +32,7 @@ class MenuController extends Controller
     }
 
     public function store(Request $request) {
+        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -39,12 +42,14 @@ class MenuController extends Controller
         $menu = new Menu();
         $menu->name = $request->name;
         $menu->description = $request->description;
+        $menu->store_id = $request->store_id;
 
         if ($request->hasFile('thumbnail')) {
             $menu->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
         }
 
         $menu->save();
+
 
         return response()->json(['success' => 'Menu created successfully.']);
     }
