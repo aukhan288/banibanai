@@ -23,38 +23,80 @@
 
 <!-- User Modal -->
 <div class="modal fade" id="menuModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="menuModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="menuModalTitle">Menu</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="userForm" action="">
+        <form id="menuForm" action="">
+          @csrf
           <div id="userFormErrors" class="alert alert-danger d-none"></div>
           <input type="hidden" id="userId" name="id" />
+          
           <div class="mb-3">
-            <label for="userName" class="form-label">Name</label>
-            <input type="text" class="form-control" name="name" id="userName" placeholder="Name" required />
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Name" required />
           </div>
+          
           <div class="mb-3">
-            <label for="userEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="userEmail" placeholder="Email" required />
+            <label for="thumbnail" class="form-label">Thumbnail</label>
+            <input type="file" class="form-control" name="thumbnail" id="thumbnail" accept="image/*" required />
           </div>
-      
+
           <div class="mb-3">
-            <label for="userPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" name="password" id="userPassword" placeholder="Password (leave blank to keep current)" />
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter description" required></textarea>
           </div>
+
+          <div class="mb-3">
+            <label for="store_id" class="form-label">Store</label>
+            <select class="form-select form-select-md" name="store_id" id="store_id">
+              @foreach($stores as $store)
+                <option value="{{ $store->id }}">{{ $store->name }}</option>
+              @endforeach  
+            </select>
+          </div>
+
+          <hr>
+          <h4>Products</h4>
+          <hr>
+          <div id="productRows">
+            <div class="row mb-3 product-row">
+              <div class="col-sm-5">
+                <label for="category_id" class="form-label">Category</label>
+                <select class="form-select form-select-md category_id" onchange="fetchProducts(this)">
+                  <option value="">Select a category</option>
+                  @foreach($Categories as $Category)
+                    <option value="{{ $Category->id }}">{{ $Category->name }}</option>
+                  @endforeach  
+                </select>
+              </div>
+              <div class="col-sm-5">
+                <label for="product_id" class="form-label">Product</label>
+                <select class="form-select form-select-md product_id">
+                  <option value="">Select a product</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <button type="button" class="btn btn-sm btn-danger mt-4" onclick="removeProductRow(this)">Remove</button>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-sm btn-primary" onclick="addProductRow()">Add Product</button>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="userModalSubmit">Save</button>
+            <button type="submit" class="btn btn-primary" id="menuModalSubmit">Save</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+
 
 <script>
 $(document).ready(function() {
@@ -213,6 +255,96 @@ $(document).ready(function() {
     $('#menuModal').data('action', action);
   });
 });
+// Sample data - you would replace this with your actual product data
+function fetchProducts(selectElement) {
+    const categoryId = selectElement.value;
+    const productSelect = selectElement.closest('.product-row').querySelector('.product_id');
+
+    // Clear existing options
+    productSelect.innerHTML = '<option value="">Select a product</option>';
+
+    if (categoryId) {
+      // Make a GET request to the server
+      fetch(`/products/${categoryId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success && data.data) {
+            data.data.forEach(product => {
+              const option = document.createElement('option');
+              option.value = product.id;
+              option.textContent = product.name;
+              productSelect.appendChild(option);
+            });
+          } else {
+            console.error(data.message);
+          }
+        })
+        .catch(error => console.error('Fetch error:', error));
+    }
+  }
+
+  function addProductRow() {
+    const productRows = document.getElementById('productRows');
+    const newRow = document.createElement('div');
+    newRow.className = 'row mb-3 product-row';
+    newRow.innerHTML = `
+      <div class="col-sm-5">
+        <label for="category_id" class="form-label">Category</label>
+        <select class="form-select form-select-md category_id" onchange="fetchProducts(this)">
+          <option value="">Select a category</option>
+          @foreach($Categories as $Category)
+            <option value="{{ $Category->id }}">{{ $Category->name }}</option>
+          @endforeach  
+        </select>
+      </div>
+      <div class="col-sm-5">
+        <label for="product_id" class="form-label">Product</label>
+        <select class="form-select form-select-md product_id">
+          <option value="">Select a product</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-sm btn-danger mt-4" onclick="removeProductRow(this)">Remove</button>
+      </div>
+    `;
+    productRows.appendChild(newRow);
+  }
+
+  function removeProductRow(button) {
+    const row = button.closest('.product-row');
+    row.remove();
+  }
+
+  $('#menuForm').on('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        const formData = new FormData(this); // Create a FormData object
+        
+        $.ajax({
+            url: '/add-menu', // Use the form action URL
+            method: 'POST',
+            data: formData,
+            contentType: false, // Necessary for FormData
+            processData: false, // Necessary for FormData
+            success: function(response) {
+                // Handle success response
+                alert('Menu saved successfully!');
+                // Optionally, you can close the modal or reset the form
+          //      $('#menuModal').modal('hide');
+          //      $('#menuForm')[0].reset(); // Reset the form
+            },
+            error: function(xhr) {
+                // Handle error response
+                $('#userFormErrors').removeClass('d-none').text('An error occurred. Please try again.');
+                console.error('Error saving menu:', xhr);
+            }
+        });
+    });
 </script>
 
 @endsection

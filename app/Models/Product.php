@@ -12,5 +12,6 @@ class Product extends Model
         'name',
         'description',
         'thumbnail',
+        'category_id',
     ];
 }
