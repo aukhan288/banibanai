@@ -142,7 +142,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('/products') }}">
           <i class="bi bi-grid"></i>
-          <span>Products</span>
+          <span>Items</span>
         </a>
       </li><!-- End Dashboard Nav -->
       @endif

@@ -11,7 +11,7 @@ use Auth;
 class ProductController extends Controller
 {
     public function index() {
-        $title = "Products";
+        $title = "Items";
         $categories=Category::where('user_id', Auth::user()?->id)->orderBy('name','asc')->get(['id','name']);
         return view('products', compact('title','categories')); // Ensure the view name matches your structure
     }

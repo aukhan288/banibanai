@@ -11,25 +11,45 @@ class Store extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'user_id',
+        'name',
+        'storeType',
+        'storePurpose',
+        'storeBankDetails',
+        'storeOwner',
+        'storeManager',
+        'ntn',
         'thumbnail',
-        'min_delevery_time',
-        'min_order',
-        'rating',
-        'opning_time',
+        'storeContactName',
+        'storeContact1',
+        'storeContact2',
+        'storeContactMail',
         'address',
         'lat',
         'long',
-        'ntn',
-        'delivery_type',
-        'delivery_fee',
+        'opning_time',
+        'closing_time',
+        'min_order',
+        'min_order_price',
+        'deliveryFeetype',
+        'delivery_amount_min',
+        'delivery_amount_max',
         'delivery_radius',
+        'deliveryBy',
+        'orderTakingTime',
+    
+        'delivery_slots_start',
+        'delivery_slots_end',
+
+        'rating',        
         'commission',
         'platform_fee',
         'venu_fee',
     ];
-
+    protected $casts = [
+        'delivery_slots_start' => 'array',
+        'delivery_slots_end' => 'array',
+    ];
 
     public function storeType()
     {

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Store;
 use App\Models\Category;
+use App\Models\MenuProduct;
+
 use Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,7 +34,7 @@ class MenuController extends Controller
     }
 
     public function store(Request $request) {
-        dd($request->all());
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -49,8 +51,17 @@ class MenuController extends Controller
         }
 
         $menu->save();
+        
+        foreach ($request->input('products') as $productData) {
 
+            
+          $MenuProduct=new MenuProduct();
+          $MenuProduct->menu_id=$menu->id;
+        //   $MenuProduct->category_id=$product->category_id;
+          $MenuProduct->product_id=$productData['product_id'];
 
+          $MenuProduct->save();
+        }
         return response()->json(['success' => 'Menu created successfully.']);
     }
 

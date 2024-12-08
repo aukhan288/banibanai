@@ -13,20 +13,37 @@ return new class extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {  
         $table->id();
-        $table->string('name');
         $table->unsignedBigInteger('user_id');
+        $table->string('name');
+        $table->string('storeType');
+        $table->string('storePurpose');
+        $table->string('storeBankDetails');
+        $table->string('storeOwner');
+        $table->string('storeManager');
+        $table->unsignedInteger('ntn');
         $table->string('thumbnail');
-        $table->string('min_delevery_time');
-        $table->double('min_order');
-        $table->double('rating')->nullable();
-        $table->time('opning_time');
+        $table->string('storeContactName');
+        $table->string('storeContact1');
+        $table->string('storeContact2');
+        $table->string('storeContactMail');
         $table->string('address');
         $table->double('lat');
         $table->double('long');
-        $table->unsignedInteger('ntn');
-        $table->string('delivery_type');
-        $table->unsignedInteger('delivery_fee');
+        $table->time('opning_time');
+        $table->time('closing_time');
+        $table->double('min_order');
+        $table->double('min_order_price');
+        $table->string('deliveryFeetype');
+        $table->double('delivery_amount_min');
+        $table->double('delivery_amount_max');
         $table->double('delivery_radius');
+        $table->string('deliveryBy');
+        $table->string('orderTakingTime');
+
+        $table->json('delivery_slots_start')->nullable();
+        $table->json('delivery_slots_end')->nullable();
+
+        $table->double('rating')->nullable();
         $table->unsignedInteger('commission');
         $table->unsignedInteger('platform_fee');
         $table->unsignedInteger('store_status')->default(1);

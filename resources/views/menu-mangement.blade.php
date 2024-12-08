@@ -60,7 +60,7 @@
           </div>
 
           <hr>
-          <h4>Products</h4>
+          <h4>Item</h4>
           <hr>
           <div id="productRows">
             <div class="row mb-3 product-row">
@@ -319,31 +319,44 @@ function fetchProducts(selectElement) {
     row.remove();
   }
 
-  $('#menuForm').on('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
-        
-        const formData = new FormData(this); // Create a FormData object
-        
-        $.ajax({
-            url: '/add-menu', // Use the form action URL
-            method: 'POST',
-            data: formData,
-            contentType: false, // Necessary for FormData
-            processData: false, // Necessary for FormData
-            success: function(response) {
-                // Handle success response
-                alert('Menu saved successfully!');
-                // Optionally, you can close the modal or reset the form
-          //      $('#menuModal').modal('hide');
-          //      $('#menuForm')[0].reset(); // Reset the form
-            },
-            error: function(xhr) {
-                // Handle error response
-                $('#userFormErrors').removeClass('d-none').text('An error occurred. Please try again.');
-                console.error('Error saving menu:', xhr);
-            }
-        });
+  document.getElementById('menuForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    // Collect selected category and product values
+    const productData = [];
+    document.querySelectorAll('.product-row').forEach(row => {
+        const categoryId = row.querySelector('.category_id').value;
+        const productId = row.querySelector('.product_id').value;
+
+        if (categoryId && productId) {
+            productData.push({ category_id: categoryId, product_id: productId });
+        }
     });
+
+    formData.append('products', JSON.stringify(productData));
+
+    fetch('/add-menu', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+            'Accept': 'application/json',
+        },
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Form submitted successfully');
+                // Close the modal or reset the form if needed
+            } else {
+                alert('Error submitting form');
+            }
+        })
+        .catch(error => console.error('Error submitting form:', error));
+});
+
 </script>
 
 @endsection
