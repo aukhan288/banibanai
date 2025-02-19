@@ -13,5 +13,19 @@ class Product extends Model
         'description',
         'thumbnail',
         'category_id',
+        'itemVariations',
+        'customChoices',
+        'flatChoices',
+        'minNumOfChoices',
+        'maxNumOfChoices',
+        'choiceGroupName',
+        'minNumOfChoicesGroup',
+        'maxNumOfChoicesGroup',
+
+    ];
+    protected $casts = [
+        'itemVariations' => 'array',
+        'customChoices' => 'array',
+        'flatChoices' => 'array',
     ];
 }

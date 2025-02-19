@@ -65,9 +65,8 @@
             <label for="thumbnail" class="form-label">Thumbnail</label>
             <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*">
           </div>
-
+        <hr>
           <h4 class='text-center'><b>Variations</b></h4>
-          <hr>
           <div class=" row mb-3">
              <div class="col-sm-12">
               <label for="itemVariations" class="form-label">Variation Name</label>
@@ -98,7 +97,7 @@
               <input type="number" id="maxNumOfChoices" class="form-control" name="maxNumOfChoices" placeholder="Enter 1 if your customers can only choose 1" required />
             </div>
           </div>
-
+          <hr>
           <h4 class='text-center'><b>Choice Group Details</b></h4>
           <hr>
           <div class="row mb-3">
@@ -108,10 +107,7 @@
                   <option value="">Enter Item name </option>
               </select>
             </div>
-            <!-- <div class="col-sm-6">
-              <label for="minNumOfChoices" class="form-label">Minimum Number of Choices</label>
-              <input type="number" id="minNumOfChoices" class="form-control" name="minNumOfChoices" placeholder="Enter 0 if this group is optional for your customers" required />
-            </div> -->
+
             <div class="col-sm-6">
               <label for="choiceGroupName" class="form-label">Name of Choice Group</label>
               <input type="text" id="choiceGroupName" class="form-control" name="choiceGroupName" placeholder="Enter choice group name 'optional'" required />
@@ -120,14 +116,33 @@
 
           <div class="row mb-3">
             <div class="col-sm-6">
-              <label for="minNumOfChoices" class="form-label">Minimum Number of Choices</label>
-              <input type="number" id="minNumOfChoices" class="form-control" name="minNumOfChoices" placeholder="Enter 0 if this group is optional for your customers" required />
+              <label for="minNumOfChoicesGroup" class="form-label">Minimum Number of Choices</label>
+              <input type="number" id="minNumOfChoicesGroup" class="form-control" name="minNumOfChoicesGroup" placeholder="Enter 0 if this group is optional for your customers" required />
             </div>
             <div class="col-sm-6">
-              <label for="maxNumOfChoices" class="form-label">Max Number of Choices</label>
-              <input type="number" id="maxNumOfChoices" class="form-control" name="maxNumOfChoices" placeholder="Enter 1 if your customers can only choose 1" required />
+              <label for="maxNumOfChoicesGroup" class="form-label">Max Number of Choices</label>
+              <input type="number" id="maxNumOfChoicesGroup" class="form-control" name="maxNumOfChoicesGroup" placeholder="Enter 1 if your customers can only choose 1" required />
             </div>
           </div>
+          <hr>
+
+<!-- Start Choices Custom -->
+          <div class=" mb-3">
+            <span class="text-bold h5 text-dark">Choices - Custom</span>
+            <p class="text-opacity-50 fs-6 mt-3">Add choices for your customer to pick from</p>
+            <div id="customContainer"></div>
+            <button type="button" class="btn btn-primary mt-2" onclick="addChoice()">Add</button>
+          </div>
+<!-- End Choices Custom -->
+<hr>
+<!-- Start Choices Flat -->
+        <div class=" mb-3">
+          <span class="text-bold h5 text-dark">Choices - Flat</span>
+          <p class="text-opacity-50 fs-6 mt-3">Add choices for your customer to pick from</p>
+          <div id="flatContainer"></div>
+          <button type="button" class="btn btn-primary mt-2" onclick="addFlatChoice()">Add</button>
+        </div>
+<!-- End Choices Flat -->
 
           <div id="productErrors" class="alert alert-danger d-none"></div>
           
@@ -140,6 +155,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script>
 $(document).ready(function() {
@@ -182,11 +199,13 @@ $(document).ready(function() {
     pagingType: "simple_numbers"
   });
 
-  $('#productForm').on('submit', function(event) {
+$('#productForm').on('submit', function(event) {
     event.preventDefault();
     var id = $('#productId').val();
     var url = id ? `/product/${id}` : '/product-create';
     var method = id ? 'PUT' : 'POST';
+console.log('*****',customChoices);
+return
 
     $.ajax({
       url: url,
@@ -263,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
         required 
         placeholder="add here" 
       />
-      <button type="button" class="btn btn-danger remove-slot">Remove</button>
+      <button type="button" class="btn btn-danger remove-slot">Delete</button>
     `;
 
     itemVariationsContainer.appendChild(newSlot);
@@ -277,6 +296,115 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 //End variations adding slots
+
+// Start Choices Custom
+let customChoices = [];
+        
+        function renderCustomForm() {
+            const container = document.getElementById('customContainer');
+            container.innerHTML = '';
+            
+            customChoices.forEach((choice, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div class="d-flex gap-2 mb-2 align-items-end">
+                      <div class="d-flex flex-column col-5">
+                        <label for="ingredientSizes">Ingredient Sizes:</label>
+                        <input  type="text" placeholder="Ingredients" value="${choice.ingredients}" oninput="updateField(${index}, 'ingredients', this.value)">
+                      </div>
+                      
+                      <div class="d-flex flex-column col-3">
+                        <label for="persons">Persons:</label>
+                        <input type="number" placeholder="Persons" value="${choice.persons}" oninput="updateField(${index}, 'persons', this.value)">
+                      </div>
+                      
+                      <div class="d-flex flex-column col-3">
+                        <label for="price">Price:</label>
+                        <input  type="number" placeholder="Price" value="${choice.price}" oninput="updateField(${index}, 'price', this.value)">
+                      </div>
+                      
+                      <div class="d-flex flex-column">
+                        <button type="button" class="border-0 " onclick="removeCustomChoice(${index})">
+                           <i class="fa fa-trash text-danger icon-link-hover mb-2" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                      
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function addChoice() {
+            customChoices.push({ ingredients: '', persons: '', price: '' });
+            renderCustomForm();
+        }
+        
+        function removeCustomChoice(index) {
+            customChoices.splice(index, 1);
+            renderCustomForm();
+        }
+        
+        function updateField(index, field, value) {
+          console.log('ccccccc',customChoices);
+          
+          
+            customChoices[index][field] = value;
+        }
+// End Choices Custom
+
+// Start Choices Flat
+let flatChoices = [];
+        
+        function renderFlatForm() {
+            const container = document.getElementById('flatContainer');
+            container.innerHTML = '';
+            
+            flatChoices.forEach((choice, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div class="d-flex gap-2 mb-2 align-items-end">
+                      <div class="d-flex flex-column col-5">
+                        <label for="ingredientSizes">Ingredient Sizes:</label>
+                        <input  type="text" placeholder="Ingredients" value="${choice.ingredients}" oninput="updateField(${index}, 'ingredients', this.value)">
+                      </div>
+                      
+                      <div class="d-flex flex-column col-3">
+                        <label for="persons">Persons:</label>
+                        <input type="number" placeholder="Persons" value="${choice.persons}" oninput="updateField(${index}, 'persons', this.value)">
+                      </div>
+                      
+                      <div class="d-flex flex-column col-3">
+                        <label for="price">Price:</label>
+                        <input  type="number" placeholder="Price" value="${choice.price}" oninput="updateField(${index}, 'price', this.value)">
+                      </div>
+                      
+                      <div class="d-flex flex-column">
+                        <button type="button" class="border-0 " onclick="removeFlatChoice(${index})">
+                           <i class="fa fa-trash text-danger icon-link-hover mb-2" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                      
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function addFlatChoice() {
+            flatChoices.push({ ingredients: '', persons: '', price: '' });
+            renderFlatForm();
+        }
+        
+        function removeFlatChoice(index) {
+            flatChoices.splice(index, 1);
+            renderFlatForm();
+        }
+        
+        function updateField(index, field, value) {
+            flatChoices[index][field] = value;
+        }
+// End Choices Flat
 
 
 document.addEventListener("DOMContentLoaded", () => {

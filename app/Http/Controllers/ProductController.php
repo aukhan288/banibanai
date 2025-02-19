@@ -36,16 +36,24 @@ class ProductController extends Controller
         //     'category' => 'require|numeric',
         //     'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         // ]);
-
+     
         $product = new Product();
         $product->name = $request->name;
         $product->category_id = $request->category;
         $product->description = $request->description;
+        $product->minNumOfChoices = $request->minNumOfChoices;
+        $product->maxNumOfChoices = $request->maxNumOfChoices;
+        $product->choiceGroupName = $request->choiceGroupName;
+        $product->minNumOfChoicesGroup = $request->minNumOfChoicesGroup;
+        $product->maxNumOfChoicesGroup = $request->maxNumOfChoicesGroup;
+        $product->itemVariations = json_encode($request->itemVariations);
+        $product->customChoices = json_encode($request->customChoices);
+        $product->flatChoices = json_encode($request->flatChoices);
 
         if ($request->hasFile('thumbnail')) {
             $product->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
         }
-
+        dd($request->all());
         $product->save();
 
         return response()->json(['success' => 'Product created successfully.']);
