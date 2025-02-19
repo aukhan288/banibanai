@@ -204,13 +204,16 @@ $('#productForm').on('submit', function(event) {
     var id = $('#productId').val();
     var url = id ? `/product/${id}` : '/product-create';
     var method = id ? 'PUT' : 'POST';
-console.log('*****',customChoices);
-return
+
+    let formData = new FormData(this); // Assuming 'this' is a form element
+    formData.append('flatChoices', JSON.stringify(flatChoices));
+    formData.append('customChoices', JSON.stringify(customChoices));
+
 
     $.ajax({
       url: url,
       type: method,
-      data: new FormData(this),
+      data: formData,
       processData: false,
       contentType: false,
       success: function(response) {
@@ -310,17 +313,17 @@ let customChoices = [];
                     <div class="d-flex gap-2 mb-2 align-items-end">
                       <div class="d-flex flex-column col-5">
                         <label for="ingredientSizes">Ingredient Sizes:</label>
-                        <input  type="text" placeholder="Ingredients" value="${choice.ingredients}" oninput="updateField(${index}, 'ingredients', this.value)">
+                        <input  type="text" placeholder="Ingredients" value="${choice.ingredients}" oninput="updateCustomField(${index}, 'ingredients', this.value)">
                       </div>
                       
                       <div class="d-flex flex-column col-3">
                         <label for="persons">Persons:</label>
-                        <input type="number" placeholder="Persons" value="${choice.persons}" oninput="updateField(${index}, 'persons', this.value)">
+                        <input type="number" placeholder="Persons" value="${choice.persons}" oninput="updateCustomField(${index}, 'persons', this.value)">
                       </div>
                       
                       <div class="d-flex flex-column col-3">
                         <label for="price">Price:</label>
-                        <input  type="number" placeholder="Price" value="${choice.price}" oninput="updateField(${index}, 'price', this.value)">
+                        <input  type="number" placeholder="Price" value="${choice.price}" oninput="updateCustomField(${index}, 'price', this.value)">
                       </div>
                       
                       <div class="d-flex flex-column">
@@ -346,10 +349,16 @@ let customChoices = [];
         }
         
         function updateField(index, field, value) {
+          console.log('ffffffffff',flatChoices);
+          
+          
+          flatChoices[index][field] = value;
+        }
+        function updateCustomField(index, field, value) {
           console.log('ccccccc',customChoices);
           
           
-            customChoices[index][field] = value;
+          customChoices[index][field] = value;
         }
 // End Choices Custom
 
@@ -401,9 +410,11 @@ let flatChoices = [];
             renderFlatForm();
         }
         
-        function updateField(index, field, value) {
-            flatChoices[index][field] = value;
-        }
+        // function updateField(index, field, value) {
+        
+        
+        //     flatChoices[index][field] = value;
+        // }
 // End Choices Flat
 
 

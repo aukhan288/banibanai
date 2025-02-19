@@ -34,7 +34,7 @@ class MenuController extends Controller
     }
 
     public function store(Request $request) {
-        
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -47,18 +47,17 @@ class MenuController extends Controller
         $menu->store_id = $request->store_id;
 
         if ($request->hasFile('thumbnail')) {
-            $menu->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+            $menu->thumbnail = 'storage/'.$request->file('thumbnail')->store('thumbnails', 'public');
         }
 
         $menu->save();
-        
-        foreach ($request->input('products') as $productData) {
-
+        foreach (json_decode($request->products) as $productData) {
             
-          $MenuProduct=new MenuProduct();
+            
+            $MenuProduct=new MenuProduct();
           $MenuProduct->menu_id=$menu->id;
         //   $MenuProduct->category_id=$product->category_id;
-          $MenuProduct->product_id=$productData['product_id'];
+          $MenuProduct->product_id=$productData->product_id;
 
           $MenuProduct->save();
         }
