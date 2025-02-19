@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Category name
+            $table->unsignedBigInteger('user_id');
             $table->text('description')->nullable(); // Optional description
             $table->string('thumbnail')->nullable(); // Thumbnail field
             $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade'); // Self join for parent category

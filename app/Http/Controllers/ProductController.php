@@ -6,18 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
-
+use Auth;
 
 class ProductController extends Controller
 {
     public function index() {
-        $title = "Products";
-        $categories=Category::orderBy('name','asc')->get(['id','name']);
+        $title = "Items";
+        $categories=Category::where('user_id', Auth::user()?->id)->orderBy('name','asc')->get(['id','name']);
         return view('products', compact('title','categories')); // Ensure the view name matches your structure
     }
 
     public function productList(Request $request) {
-        $products = Product::paginate($request->input('length', 10));
+        $categoriesId = Category::where('user_id', Auth::user()?->id)->pluck('id')->toArray();
+        
+        $products = Product::whereIn('category_id',$categoriesId)->paginate($request->input('length', 10));
         
         return response()->json([
             'draw' => intval($request->input('draw')),
@@ -34,16 +36,24 @@ class ProductController extends Controller
         //     'category' => 'require|numeric',
         //     'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         // ]);
-
+     
         $product = new Product();
         $product->name = $request->name;
         $product->category_id = $request->category;
         $product->description = $request->description;
+        $product->minNumOfChoices = $request->minNumOfChoices;
+        $product->maxNumOfChoices = $request->maxNumOfChoices;
+        $product->choiceGroupName = $request->choiceGroupName;
+        $product->minNumOfChoicesGroup = $request->minNumOfChoicesGroup;
+        $product->maxNumOfChoicesGroup = $request->maxNumOfChoicesGroup;
+        $product->itemVariations = json_encode($request->itemVariations);
+        $product->customChoices = json_encode($request->customChoices);
+        $product->flatChoices = json_encode($request->flatChoices);
 
         if ($request->hasFile('thumbnail')) {
             $product->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
         }
-
+        dd($request->all());
         $product->save();
 
         return response()->json(['success' => 'Product created successfully.']);
