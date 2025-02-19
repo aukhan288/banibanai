@@ -47,13 +47,12 @@ class ProductController extends Controller
         $product->minNumOfChoicesGroup = $request->minNumOfChoicesGroup;
         $product->maxNumOfChoicesGroup = $request->maxNumOfChoicesGroup;
         $product->itemVariations = json_encode($request->itemVariations);
-        $product->customChoices = json_encode($request->customChoices);
-        $product->flatChoices = json_encode($request->flatChoices);
+        $product->customChoices = $request->customChoices;
+        $product->flatChoices = $request->flatChoices;
 
         if ($request->hasFile('thumbnail')) {
-            $product->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+            $product->thumbnail = 'storage/'.$request->file('thumbnail')->store('thumbnails', 'public');
         }
-        dd($request->all());
         $product->save();
 
         return response()->json(['success' => 'Product created successfully.']);

@@ -115,7 +115,7 @@ $(document).ready(function() {
     "columns": [
       { 'title': 'Thumbnail', "data": "",
         "render": function(data, type, row) {
-          return `<img src=${row?.thumbnail}/>`
+          return `<img src=${row?.thumbnail} style="width:40px"/>`
         }
        },
       { 'title': 'Name', "data": "name" },
@@ -348,7 +348,18 @@ function fetchProducts(selectElement) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Form submitted successfully');
+              Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Menu has been added",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              $('#menuModal').modal('hide'); // Hide the modal
+
+// If using DataTables:
+$('#menusTable').DataTable().ajax.reload();
+
                 // Close the modal or reset the form if needed
             } else {
                 alert('Error submitting form');

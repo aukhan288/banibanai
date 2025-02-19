@@ -25,7 +25,7 @@ class Product extends Model
     ];
     protected $casts = [
         'itemVariations' => 'array',
-        'customChoices' => 'array',
-        'flatChoices' => 'array',
+        // 'customChoices' => 'array',
+        // 'flatChoices' => 'array',
     ];
 }
