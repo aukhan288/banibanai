@@ -84,7 +84,7 @@ class StoreController extends Controller
         $store = new Store($request->except('thumbnail'));
 
         if ($request->hasFile('thumbnail')) {
-            $store->thumbnail = $request->file('thumbnail')->store('thumbnails');
+            $store->thumbnail = 'stroge/'.$request->file('thumbnail')->store('thumbnails');
         }
 
 

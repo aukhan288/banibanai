@@ -131,7 +131,7 @@
             <span class="text-bold h5 text-dark">Choices - Custom</span>
             <p class="text-opacity-50 fs-6 mt-3">Add choices for your customer to pick from</p>
             <div id="customContainer"></div>
-            <button type="button" class="btn btn-primary mt-2" onclick="addChoice()">Add</button>
+            <button type="button" class="btn btn-primary mt-2" onclick="addCustomChoice()">Add</button>
           </div>
 <!-- End Choices Custom -->
 <hr>
@@ -199,21 +199,16 @@ $(document).ready(function() {
     pagingType: "simple_numbers"
   });
 
-$('#productForm').on('submit', function(event) {
+  $('#productForm').on('submit', function(event) {
     event.preventDefault();
     var id = $('#productId').val();
     var url = id ? `/product/${id}` : '/product-create';
     var method = id ? 'PUT' : 'POST';
 
-    let formData = new FormData(this); // Assuming 'this' is a form element
-    formData.append('flatChoices', JSON.stringify(flatChoices));
-    formData.append('customChoices', JSON.stringify(customChoices));
-
-
     $.ajax({
       url: url,
       type: method,
-      data: formData,
+      data: new FormData(this),
       processData: false,
       contentType: false,
       success: function(response) {
@@ -255,8 +250,12 @@ function editProduct(id) {
 function deleteProduct(id) {
   if (confirm('Are you sure you want to delete this product?')) {
     $.ajax({
+      
       url: `/product/${id}`,
       type: 'DELETE',
+      headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
       success: function(response) {
         $('#productsTable').DataTable().ajax.reload();
       },
@@ -338,7 +337,7 @@ let customChoices = [];
             });
         }
         
-        function addChoice() {
+        function addCustomChoice() {
             customChoices.push({ ingredients: '', persons: '', price: '' });
             renderCustomForm();
         }
@@ -348,17 +347,9 @@ let customChoices = [];
             renderCustomForm();
         }
         
-        function updateField(index, field, value) {
-          console.log('ffffffffff',flatChoices);
-          
-          
-          flatChoices[index][field] = value;
-        }
         function updateCustomField(index, field, value) {
-          console.log('ccccccc',customChoices);
-          
-          
-          customChoices[index][field] = value;
+            customChoices[index][field] = value;
+            console.log("customChoices",customChoices)
         }
 // End Choices Custom
 
@@ -375,17 +366,17 @@ let flatChoices = [];
                     <div class="d-flex gap-2 mb-2 align-items-end">
                       <div class="d-flex flex-column col-5">
                         <label for="ingredientSizes">Ingredient Sizes:</label>
-                        <input  type="text" placeholder="Ingredients" value="${choice.ingredients}" oninput="updateField(${index}, 'ingredients', this.value)">
+                        <input  type="text" placeholder="Ingredients" value="${choice.ingredients}" oninput="updateCustomField(${index}, 'ingredients', this.value)">
                       </div>
                       
                       <div class="d-flex flex-column col-3">
                         <label for="persons">Persons:</label>
-                        <input type="number" placeholder="Persons" value="${choice.persons}" oninput="updateField(${index}, 'persons', this.value)">
+                        <input type="number" placeholder="Persons" value="${choice.persons}" oninput="updateCustomField(${index}, 'persons', this.value)">
                       </div>
                       
                       <div class="d-flex flex-column col-3">
                         <label for="price">Price:</label>
-                        <input  type="number" placeholder="Price" value="${choice.price}" oninput="updateField(${index}, 'price', this.value)">
+                        <input  type="number" placeholder="Price" value="${choice.price}" oninput="updateCustomField(${index}, 'price', this.value)">
                       </div>
                       
                       <div class="d-flex flex-column">
@@ -410,13 +401,11 @@ let flatChoices = [];
             renderFlatForm();
         }
         
-        // function updateField(index, field, value) {
-        
-        
-        //     flatChoices[index][field] = value;
-        // }
+        function updateCustomField(index, field, value) {
+            flatChoices[index][field] = value;
+            console.log("flatChoices",flatChoices)
+        }
 // End Choices Flat
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const nameInput = document.getElementById("name");

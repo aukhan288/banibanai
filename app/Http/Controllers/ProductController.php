@@ -88,7 +88,7 @@ class ProductController extends Controller
     }
 
     public function destroy($id) {
-        $product = Products::findOrFail($id);
+        $product = Product::findOrFail($id);
         // Optionally delete the thumbnail if it exists
         if ($product->thumbnail) {
             Storage::disk('public')->delete($product->thumbnail);
